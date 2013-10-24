@@ -6,15 +6,17 @@ class Login {
 		
 		$this->id = 0;
 		$this->name = '';
+		$this->avatar = '';
 		$this->authenticated = false;
 		
 		if (isset($_COOKIE['auth'])) {
 			// read the cookie
 			$user_id = intval($_COOKIE['auth']);
-			$user = $db->get_row("SELECT id, name FROM users WHERE id = $user_id LIMIT 1");
+			$user = $db->get_row("SELECT id, name, avatar FROM users WHERE id = $user_id LIMIT 1");
 			if ($user) {
 				$this->id = $user->id;
 				$this->name = $user->name;
+				$this->avatar = $user->avatar;
 				$this->authenticated = true;
 			}
 		}
@@ -23,11 +25,12 @@ class Login {
 	public function authenticate($email, $password, $remember=false) {
 		global $db;
 		
-		$user = $db->get_row("SELECT id, name, password FROM users WHERE email = '$email' LIMIT 1");
+		$user = $db->get_row("SELECT id, name, password, avatar FROM users WHERE email = '$email' LIMIT 1");
 		if ($user) {
 			if ($user->password == $password) {
 				$this->id = $user->id;
 				$this->name = $user->name;
+				$this->avatar = $user->avatar;
 				$this->authenticated = true;	
 				// set the cookie
 				$time = $remember ? time() + 2592000 : 0;
@@ -41,6 +44,7 @@ class Login {
 	public function logout() {
 		$this->id = 0;
 		$this->name = '';
+		$this->avatar = '';
 		$this->authenticated = false;
 		// reset the cookie
 		setcookie('auth', '', time() - 3600);

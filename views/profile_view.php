@@ -1,6 +1,6 @@
 <aside class="sidebar">
 	<div class="avatar">
-		<img src="<?=get_avatar($user->id)?>" width="200" height="200" />
+		<img src="<?php echo get_avatar($user->avatar); ?>" width="200" height="200" />
 	</div>
 	
 	<form>
@@ -14,11 +14,11 @@
 	</ul>
 		
 	<h3>Friends</h3>
-	<?
+	<?php
 	if ($friends) {
 		foreach ($friends as $friend) {
-			echo '<a href="'.profile_uri($friend->id).'">';
-			echo '<img src="'.get_avatar($friend->id).'" width="50" height="50" />';
+			echo '<a href="' . profile_uri($friend->id) . '">';
+			echo '<img src="' . get_avatar($friend->avatar) . '" width="50" height="50" />';
 			echo '</a>';
 		}
 	} else {
@@ -29,22 +29,22 @@
 
 <section class="main">
 	<div class="user-details">
-		<h2><?=$user->name?> <?=$user->lastname?></h2>
-		<p>Birthday: <?=$user->get_birthday()?></p>
-		<p>Gender: <a href="<?=search('gender', $user->gender)?>"><?=$user->get_gender()?></a></p>
+		<h2><?php echo $user->name; ?> <?php echo $user->lastname; ?></h2>
+		<p>Birthday: <?php echo date("F j, Y", $user->birthday); ?></p>
+		<p>Gender: <a href="<?php echo search('gender', $user->gender); ?>"><?php echo $user->get_gender(); ?></a></p>
 		<? if ($user->course) { ?>
-			<p>Course: <a href="<?=search('course', $user->course_id)?>"><?=$user->course?></a></p>
+			<p>Course: <a href="<?php echo search('course', $user->course_id); ?>"><?php echo $user->course; ?></a></p>
 		<? } ?>
-		<p>Age: <?=$user->get_age()?></p>
+		<p>Age: <?php echo $user->get_age(); ?></p>
 	</div>
 	
 	<h3>Wall</h3>
 	
-	<? if ($post_error) echo $post_error; ?>
+	<?php if ($post_error) echo $post_error; ?>
 	
-	<? Post::print_form(); ?>
+	<?php Post::print_form(); ?>
 	
-	<?
+	<?php
 	if ($posts) {
 		foreach ($posts as $post) {
 			$post->print_post();

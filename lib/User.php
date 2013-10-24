@@ -5,9 +5,10 @@ class User {
 	public $name;
 	public $lastname;
 	public $email;
-	private $password;
+	public $password;
 	public $birthday;
 	public $gender; // 1=Male, 2=Female
+	public $avatar;
 	public $course;
 	public $course_id;
 	
@@ -27,8 +28,9 @@ class User {
 			$this->name = $user->name;
 			$this->lastname = $user->lastname;
 			$this->email = $user->email;
-			$this->birthday = $user->birthday;
+			$this->birthday = strtotime($user->birthday);
 			$this->gender = $user->gender;
+			$this->avatar = $user->avatar;
 			$this->course = $user->course_name;
 			$this->course_id = $user->course_id;
 			return true;
@@ -36,14 +38,29 @@ class User {
 		return false;
 	}
 	
+	public function store() {
+		global $db;
+		
+		if ($this->id > 0) {
+			// is an update
+			if ($db->query("UPDATE users SET avatar='$this->avatar' WHERE id = $this->id")) {
+				return true;
+			}
+		} else {
+			// is an insert
+			if ($db->query("INSERT INTO users (name, lastname, email, password, birthday, gender) VALUES ('$this->name', '$this->lastname', '$this->email', '$this->password', '$this->birthday', $this->gender)")) {
+				return $db->insert_id;
+			}
+		}
+		return false;
+	}
+	
 	public function get_birthday() {
-		$time = strtotime($this->birthday);
-		return date("F j, Y", $time);
+		return date("F j, Y", $this->birthday);
 	}
 	
 	public function get_age() {
-		$time = strtotime($this->birthday);
-		return date('Y') - date('Y', $time);
+		return date('Y') - date('Y', $this->birthday);
 	}
 	
 	public function get_gender() {

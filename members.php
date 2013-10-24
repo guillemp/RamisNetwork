@@ -6,7 +6,7 @@ require(LIB . 'User.php');
 
 $data['users'] = get_users();
 
-do_header();
+do_header('Members');
 do_view('members', $data);
 do_footer();
 
@@ -23,7 +23,7 @@ function get_users() {
 
 	}
 	
-	$user_ids = $db->get_col("SELECT id FROM users $from_where");
+	$user_ids = $db->get_col("SELECT id FROM users $from_where ORDER BY id DESC");
 	if ($user_ids) {	
 		foreach ($user_ids as $id) {
 			$user = new User();

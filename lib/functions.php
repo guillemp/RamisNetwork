@@ -30,10 +30,12 @@ function search($key, $value) {
 	return ROOT . 'members.php?' . $key . '=' . $value;
 }
 
-function get_avatar($id) {
-	$file = PATH . 'img/pics/user' . $id . '.jpg';
-	if (file_exists($file)) {
-		return ROOT . 'img/pics/user' . $id . '.jpg';
+function get_avatar($name='') {
+	if (!empty($name)) {
+		$file = PATH . 'img/pics/' . $name;
+		if (file_exists($file)) {
+			return ROOT . 'img/pics/' . $name;
+		}
 	}
 	return ROOT . 'img/default.jpg';
 }

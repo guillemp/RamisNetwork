@@ -14,7 +14,7 @@ if (isset($_GET['action'])) {
 	$current_user->logout();
 }
 
-do_header();
+do_header('Login');
 do_view('login', $data);
 do_footer();
 

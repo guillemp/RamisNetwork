@@ -2,27 +2,28 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>RamisNetwork - <?=$title?></title>
-	<link rel="stylesheet" type="text/css" href="<?=ROOT?>css/estils.css">
+	<title>RamisNetwork - <?php echo $title; ?></title>
+	<link rel="stylesheet" type="text/css" href="<?php echo ROOT; ?>css/estils.css">
 </head>
 <body>
 
 <header>
 	<div class="wrap">
-		<h1><a href="<?=$home?>">RamisNetwork</a></h1>
+		<h1><a href="<?php echo $home; ?>">RamisNetwork</a></h1>
 		<nav class="algo">
 			<ul>
-				<? if ($current_user->authenticated) {?>
-					<li><a href="<?=profile_uri($current_user->id)?>"><?=$current_user->name?></a></li>
-					<li><a href="<?=ROOT?>members.php">Members</a></li>
-					<li><a href="#">Messages</a></li>
-					<li><a href="#">Privacy</a></li>
-					<li><a href="#">Settings</a></li>
-					<li><a href="<?=ROOT?>login.php?action=logout">Logout</a></li>
-				<? } else { ?>
-					<li><a href="<?=ROOT?>members.php">Members</a></li>
-					<li><a href="<?=ROOT?>login.php">Login</a></li>
-				<? } ?>
+				<?php if ($current_user->authenticated) {?>
+					<li><a href="<?php echo profile_uri($current_user->id); ?>"><?php echo $current_user->name; ?></a></li>
+					<li><a href="<?php echo ROOT; ?>courses.php">Courses</a></li>
+					<li><a href="<?php echo ROOT; ?>members.php">Members</a></li>
+					<li><a href="<?php echo ROOT; ?>messages.php">Messages</a></li>
+					<li><a href="<?php echo ROOT; ?>settings.php">Settings</a></li>
+					<li><a href="<?php echo ROOT; ?>login.php?action=logout">Logout</a></li>
+				<?php } else { ?>
+					<li><a href="<?php echo ROOT; ?>courses.php">Courses</a></li>
+					<li><a href="<?php echo ROOT; ?>members.php">Members</a></li>
+					<li><a href="<?php echo ROOT; ?>login.php">Login</a></li>
+				<?php } ?>
 			</ul>
 			<div class="clear"></div>
 		</nav>

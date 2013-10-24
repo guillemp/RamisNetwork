@@ -5,6 +5,11 @@ require(LIB . 'html.php');
 require(LIB . 'User.php');
 require(LIB . 'Post.php');
 
+// privacy settings
+if (!$current_user->authenticated) {
+	// redirecto to other place
+}
+
 $data['posts'] = get_posts();
 
 do_header('Home');

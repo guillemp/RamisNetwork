@@ -32,6 +32,7 @@ class Post {
 			$this->content = $post->post_content;
 			$this->date = $post->post_date;
 			$this->parent = $post->post_parent;
+			$this->avatar = $post->avatar;
 			return true;
 		}
 		return false;

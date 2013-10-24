@@ -8,7 +8,7 @@ if ($current_user->authenticated) {
 	die;
 }
 
-do_header();
+do_header('Welcome');
 do_view('index');
 do_footer();
 
