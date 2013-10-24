@@ -1,6 +1,11 @@
 <?php
 
 class Login {
+	public $id;
+	public $name;
+	public $avatar;
+	public $authenticated;
+	
 	function __construct() {
 		global $db;
 		
@@ -33,7 +38,7 @@ class Login {
 				$this->avatar = $user->avatar;
 				$this->authenticated = true;	
 				// set the cookie
-				$time = $remember ? time() + 2592000 : 0;
+				$time = $remember ? time() + 2592000 : 0; // 2592000=30day
 				setcookie('auth', $this->id, $time);
 				return true;
 			}
@@ -46,8 +51,8 @@ class Login {
 		$this->name = '';
 		$this->avatar = '';
 		$this->authenticated = false;
-		// reset the cookie
-		setcookie('auth', '', time() - 3600);
+		// remove the cookie
+		setcookie('auth', 0, time() - 3600);
 		header('Location: ' . ROOT);
 		die;
 	}
