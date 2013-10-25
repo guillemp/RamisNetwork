@@ -27,6 +27,9 @@ function check_form() {
 	if (!valid_email($_POST['email'])) {
 		return 'Please, enter an email from <b>iesjoanramis.org</b>';
 	}
+	if (email_exists($_POST['email'])) {
+		return 'This email is already taken';
+	}
 	if (empty($_POST['password'])) {
 		return 'Please, enter a password';
 	}
@@ -47,21 +50,32 @@ function valid_email($email) {
 	return false;
 }
 
+function email_exists($email) {
+	global $db;
+	$exists = intval($db->get_var("SELECT count(*) FROM users WHERE email='$email'"));
+	if ($exists) {
+		return true;
+	}
+	return false;
+}
+
 function save_user() {
 	global $db;
 	
 	$user = new User();
 	$user->name = $db->escape($_POST['name']);
 	$user->lastname = $db->escape($_POST['lastname']);
-	$user->email = $db->escape($_POST['email']);
+	$user->email = $db->escape(trim($_POST['email']));
 	$user->password = md5(trim($_POST['password']));
 	$user->birthday = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
 	$user->gender = ($_POST['male'] == 'male') ? 1 : 2;
 	
 	$user_id = $user->store();
 	if ($user_id) {
-		// save activity
+		// save activity & notification
 		insert_log('user_new', 0, $user_id);
+		//insert_notify();
+		
 		// redirect to profile page
 		header('Location: ' . profile_uri($user_id));
 		die;
