@@ -34,7 +34,7 @@ function check_form() {
 		return 'Please, enter a password';
 	}
 	if (empty($_POST['day']) || empty($_POST['month']) || empty($_POST['year'])) {
-		return 'Please, enter you birthday';
+		return 'Please, enter your birthday';
 	}
 	if (empty($_POST['gender'])) {
 		return 'Please, select your gender';
@@ -68,7 +68,7 @@ function save_user() {
 	$user->email = $db->escape(trim($_POST['email']));
 	$user->password = md5(trim($_POST['password']));
 	$user->birthday = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
-	$user->gender = ($_POST['male'] == 'male') ? 1 : 2;
+	$user->gender = ($_POST['gender'] == 'male') ? 1 : 2;
 	
 	$user_id = $user->store();
 	if ($user_id) {
