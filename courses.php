@@ -4,6 +4,12 @@ require('config.php');
 require(LIB . 'html.php');
 require(LIB . 'Course.php');
 
+// only logged users can view this
+if (!$current_user->authenticated) {
+	header('Location: ' . ROOT);
+	die;
+}
+
 $data['courses'] = get_courses();
 
 do_header('Courses');

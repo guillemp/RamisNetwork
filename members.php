@@ -4,6 +4,12 @@ require('config.php');
 require(LIB . 'html.php');
 require(LIB . 'User.php');
 
+// only logged users can view this
+if (!$current_user->authenticated) {
+	header('Location: ' . ROOT);
+	die;
+}
+
 $data['users'] = get_users();
 
 do_header('Members');

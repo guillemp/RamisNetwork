@@ -32,9 +32,9 @@ function search($key, $value) {
 
 function get_avatar($name='') {
 	if (!empty($name)) {
-		$file = PATH . 'img/pics/' . $name;
+		$file = PATH . 'img/avatars/' . $name;
 		if (file_exists($file)) {
-			return ROOT . 'img/pics/' . $name;
+			return ROOT . 'img/avatars/' . $name;
 		}
 	}
 	return ROOT . 'img/default.jpg';

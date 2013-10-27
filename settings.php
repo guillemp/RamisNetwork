@@ -4,12 +4,18 @@ require('config.php');
 require(LIB . 'html.php');
 require(LIB . 'User.php');
 
+// only logged users can view this
+if (!$current_user->authenticated) {
+	header('Location: ' . ROOT);
+	die;
+}
+
 $user = new User();
 $user->id = $current_user->id;
 if (!$user->read()) do_error('invalid user');
 
 if (isset($_POST['save'])) {
-	$user->avatar = upload_avatar();
+	$user->avatar = upload_avatar($user->avatar);
 	$user->store();
 }
 
@@ -20,18 +26,21 @@ do_view('settings', $data);
 do_footer();
 
 
-function upload_avatar() {
+function upload_avatar($current_avatar) {
+	require(LIB . 'phpthumb/ThumbLib.inc.php');
+	
 	$temp = $_FILES['avatar']['tmp_name'];
-	$name = uniqid() . '.jpg';	
-	$dest = PATH . 'img/pics/' . $name;
+	$path = PATH . 'img/avatars/';
+	$name = uniqid().'.jpg';	
 	
 	if (is_uploaded_file($temp)) {
-		if (move_uploaded_file($temp, $dest)) {
-			//
-			// remove old avatar from server
-			//
-			return $name;
-		}
+		// create a thumbnail of 200px x 200px
+		$thumb = PhpThumbFactory::create($temp);
+		$thumb->adaptiveResize(200, 200);
+		$thumb->save($path.$name, 'jpg');
+		// remove old avatar
+		@unlink($path.$current_avatar);
+		return $name;
 	}
 	return false;
 }

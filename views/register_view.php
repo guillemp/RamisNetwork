@@ -1,55 +1,71 @@
-<? if ($error) echo $error; ?>
-
 <form action="register.php" method="post">
-	Name: <input type="text" name="name" value="<?=$_POST['name']?>" /><br/>
-	Last name: <input type="text" name="lastname" value="<?=$_POST['lastname']?>" /><br/>
-	Email: <input type="email" name="email" value="<?=$_POST['email']?>" /><br/>
-	Password: <input type="password" name="password" /><br/>
-	Birthday <select name="day">
-		<option value="">Day</option>
-		<?php
+	<div class="login-box">
+		<h2>Register</h2>
 		
-		for ($i=1; $i<=31; $i++) {
-			$checked = '';
-			if ($i == $_POST['day']) {
-				$checked = ' selected="selected"';
-			}
-			echo '<option value="' . $i . '"' . $checked . '>' . $i . '</option>';
-		}
+		<?php if ($error) echo '<div class="error">' . $error . '</div>'; ?>
 		
-		?>
-		</select>
-		<select name="month">
-			<option value="">Month</option>
-			<?php
-
-			for ($i=1; $i<=12; $i++) {
-				$checked = '';
-				if ($i == $_POST['month']) {
-					$checked = ' selected="selected"';
-				}
-				echo '<option value="' . $i . '"' . $checked . '>' . $i . '</option>';
-			}
-
-			?>
+		<label for="name">Name:</label>
+		<div class="login-field"><input type="text" name="name" id="name" value="<?php echo $_POST['name']; ?>" /></div>
+		
+		<label for="lastname">Last name:</label>
+		<div class="login-field"><input type="text" name="lastname" id="lastname" value="<?php echo $_POST['lastname']; ?>" /></div>
+			
+		<label for="email">Email:</label>
+		<div class="login-field"><input type="email" name="email" id="email" value="<?php echo $_POST['email']; ?>" /></div>
+	
+		<label for="password">Password:</label>
+		<div class="login-field"><input type="password" name="password" id="password" /></div>
+	
+		<label>Birthday:</label>
+		<div class="login-field">
+			<select name="day">
+				<option value="">Day</option>
+				<?php
+					for ($i=1; $i<=31; $i++) {
+						$checked = '';
+						if ($i == $_POST['day']) {
+							$checked = ' selected="selected"';
+						}
+						echo '<option value="' . $i . '"' . $checked . '>' . $i . '</option>';
+					}
+				?>
 			</select>
+			&nbsp;
+			<select name="month">
+				<option value="">Month</option>
+				<?php
+					for ($i=1; $i<=12; $i++) {
+						$checked = '';
+						if ($i == $_POST['month']) {
+							$checked = ' selected="selected"';
+						}
+						echo '<option value="' . $i . '"' . $checked . '>' . $i . '</option>';
+					}
+				?>
+			</select>
+			&nbsp;
 			<select name="year">
 				<option value="">Year</option>
 				<?php
-
-				for ($i=date('Y')-12; $i>date('Y')-100; $i--) {
-					$checked = '';
-					if ($i == $_POST['year']) {
-						$checked = ' selected="selected"';
+					for ($i=date('Y')-12; $i>date('Y')-100; $i--) {
+						$checked = '';
+						if ($i == $_POST['year']) {
+							$checked = ' selected="selected"';
+						}
+						echo '<option value="' . $i . '"' . $checked . '>' . $i . '</option>';
 					}
-					echo '<option value="' . $i . '"' . $checked . '>' . $i . '</option>';
-				}
-
 				?>
-		</select>
-		<br/>
-		<label for="male">Male <input type="radio" name="gender" id="male" value="male"></label>
-		<label for="female">Female <input type="radio" name="gender" id="female" value="female"></label>
-		<br/>
-	<input type="submit" name="register" value="Register">
+			</select>
+		</div>
+		
+		<div style="margin-bottom:20px;">
+			<?php
+				$checked_male = ($_POST['gender'] == 'male') ? 'checked="checked"' : '';
+				$checked_female = ($_POST['gender'] == 'female') ? 'checked="checked"' : '';
+			?>
+			<label for="male">Male&nbsp;&nbsp;<input type="radio" name="gender" id="male" value="male" <?php echo $checked_male ?> /></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="female">Female&nbsp;&nbsp;<input type="radio" name="gender" id="female" value="female" <?php echo $checked_female ?> /></label>
+		</div>
+		<div><input type="submit" name="register" value="Register" class="button" /></div>
+	</div>
 </form>

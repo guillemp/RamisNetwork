@@ -3,8 +3,6 @@
 require('config.php');
 require(LIB . 'html.php');
 
-//ob_start();
-
 $data['error'] = false;
 if (isset($_POST['login'])) {
 	$data['error'] = do_login();
@@ -19,17 +17,22 @@ do_view('login', $data);
 do_footer();
 
 
+//
+// login.php functions
+//
+
 function do_login() {
-	global $current_user;
+	global $db, $current_user;
 	
-	$email = trim($_POST['email']);
+	$email = $db->escape(trim($_POST['email']));
 	$password = trim($_POST['password']);
+	$remember = ($_POST['remember']) ? true : false;
 	
-	if ($current_user->authenticate($email, md5($password)) == false) {
+	if ($current_user->authenticate($email, md5($password), $remember) == false) {
 		return 'Invalid email or password.';	
 	}
-	// authenticated, redirect
-	header('Location: ' . ROOT);
+	// authenticated, redirect to home
+	header('Location: ' . ROOT . 'home.php');
 	die;
 }
 

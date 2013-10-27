@@ -5,6 +5,14 @@ require(LIB . 'html.php');
 require(LIB . 'User.php');
 require(LIB . 'Post.php');
 
+// only logged users can view this
+if (!$current_user->authenticated) {
+	// check privacy options
+	
+	header('Location: ' . ROOT);
+	die;
+}
+
 $id = intval($_GET['id']);
 if ($id == 0) do_error("Invalid arguments.");
 $user = new User();
@@ -29,6 +37,9 @@ do_view('profile', $data);
 do_footer();
 
 
+//
+// profile.php functions
+//
 
 function get_posts() {
 	global $db, $user;

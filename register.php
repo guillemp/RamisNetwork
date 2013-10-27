@@ -33,6 +33,9 @@ function check_form() {
 	if (empty($_POST['password'])) {
 		return 'Please, enter a password';
 	}
+	if (strlen(trim($_POST['password'])) <= 3) {
+		return 'Please, enter a password greater than 3';
+	}
 	if (empty($_POST['day']) || empty($_POST['month']) || empty($_POST['year'])) {
 		return 'Please, enter your birthday';
 	}
@@ -70,14 +73,16 @@ function save_user() {
 	$user->birthday = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
 	$user->gender = ($_POST['gender'] == 'male') ? 1 : 2;
 	
-	$user_id = $user->store();
-	if ($user_id) {
+	// insert user into the DB
+	$new_user_id = $user->store();
+	
+	if ($new_user_id) {
 		// save activity & notification
-		insert_log('user_new', 0, $user_id);
+		insert_log('user_new', 0, $new_user_id);
 		//insert_notify();
 		
 		// redirect to profile page
-		header('Location: ' . profile_uri($user_id));
+		header('Location: ' . profile_uri($new_user_id));
 		die;
 	}
 	return 'Unknown error.';

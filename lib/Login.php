@@ -27,18 +27,18 @@ class Login {
 		}
 	}
 	
-	public function authenticate($email, $password, $remember=false) {
+	public function authenticate($email, $md5pass, $remember=false) {
 		global $db;
 		
 		$user = $db->get_row("SELECT id, name, password, avatar FROM users WHERE email = '$email' LIMIT 1");
 		if ($user) {
-			if ($user->password == $password) {
+			if ($user->password == $md5pass) {
 				$this->id = $user->id;
 				$this->name = $user->name;
 				$this->avatar = $user->avatar;
 				$this->authenticated = true;	
 				// set the cookie
-				$time = $remember ? time() + 2592000 : 0; // 2592000=30day
+				$time = $remember ? time() + 2592000 : 0; // 30day
 				setcookie('auth', $this->id, $time);
 				return true;
 			}

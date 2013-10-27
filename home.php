@@ -5,33 +5,61 @@ require(LIB . 'html.php');
 require(LIB . 'User.php');
 require(LIB . 'Post.php');
 
-// privacy settings
+// only logged users can view this
 if (!$current_user->authenticated) {
-	// redirecto to other place
+	header('Location: ' . ROOT);
+	die;
 }
 
-$data['posts'] = get_posts();
+$data['logs'] = get_logs();
 
 do_header('Home');
 do_view('home', $data);
 do_footer();
 
 
-function get_posts() {
-	global $db, $user;
+//
+// home.php functions
+//
+
+function get_logs() {
+	global $db;
 	
-	$post_ids = $db->get_col("SELECT post_id FROM posts WHERE post_type = 'wall' ORDER BY post_id DESC");
-	if ($post_ids) {
-		foreach ($post_ids as $id) {
-			$post = new Post();
-			$post->id = $id;
-			if ($post->read()) {
-				$data[] = $post;
+	$logs = $db->get_results("SELECT * FROM logs ORDER BY log_id DESC");
+	if ($logs) {
+		foreach ($logs as $log) {
+			switch ($log->log_type) {
+				case 'post_new':
+					$data['logs'][] = get_post_new($log);
+					break;
+				case 'user_new':
+					$data['logs'][] = get_user_new($log);
+					break;
+				default:
+					$data['logs'][] = 'Something<br/>';
 			}
+		
 		}
-		return $data;
+		return $data['logs'];
 	}
 	return false;
+}
+
+function get_user_new($log) {
+	global $db;
+	
+	$user = new User($log->log_user);
+	return '<img src="' . ROOT . 'img/user_add.png">&nbsp;<a href="' . profile_uri($user->id) . '">' . $user->name . '</a> has been registered';
+}
+
+function get_post_new($log) {
+	global $db;
+	
+	$user_from = new User($log->log_user);
+	$post = new Post($log->log_link);
+	$user_to = new User($post->link);
+	
+	return '<img src="' . ROOT . 'img/comment.png">&nbsp;<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a> wrote a message to <a href="' . profile_uri($post->link) . '">' . $user_to->name . '</a><br/><div style="margin-left:30px;">' . $post->content . '</div>';
 }
 
 ?>

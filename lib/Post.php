@@ -9,7 +9,7 @@ class Post {
 	public $date;
 	public $parent;
 	
-	function __construct() {
+	function __construct($id=0) {
 		$this->id = 0;
 		$this->author = 0;
 		$this->type = 'wall';
@@ -17,6 +17,12 @@ class Post {
 		$this->content = '';
 		$this->date = false;
 		$this->parent = 0;
+		
+		if ($id > 0) {
+			$this->id = $id;
+			$this->read();
+		}
+
 	}
 	
 	public function read() {

@@ -1,10 +1,11 @@
+<?php
 
-
-
-<?
-if ($posts) {
-	foreach ($posts as $post) {
-		$post->print_post();
+if ($logs) {
+	echo '<ul class="logs">';
+	foreach ($logs as $log) {
+		echo '<li>' . $log . '</li>';
 	}
+	echo '</ul>';
 }
+
 ?>
