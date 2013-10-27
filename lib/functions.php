@@ -40,4 +40,28 @@ function get_avatar($name='') {
 	return ROOT . 'img/default.jpg';
 }
 
+function time_ago($time) {
+	$txt = "";
+	$diff = time() - $time;
+	$days = intval($diff / 86400);
+	$diff = $diff % 86400;
+	$hours = intval($diff / 3600);
+	$diff = $diff % 3600;
+	$minutes = intval($diff / 60);
+	$secs = $diff % 60;
+	
+	if ($days>1) $txt .= " $days days";
+	else if ($days==1) $txt .= " $days day";
+	
+	if ($hours>1) $txt .= " $hours hours";
+	else if ($hours==1) $txt .= " $hours hour";
+
+	if ($minutes>1) $txt .= " $minutes minutes";
+	else if ($minutes==1) $txt .= " $minutes minute";
+	
+	if ($txt=="") $txt = " $secs seconds";
+	
+    return $txt;
+}
+
 ?>

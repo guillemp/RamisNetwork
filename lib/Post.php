@@ -36,7 +36,7 @@ class Post {
 			$this->type = $post->post_type;
 			$this->link = $post->post_link;
 			$this->content = $post->post_content;
-			$this->date = $post->post_date;
+			$this->date = strtotime($post->post_date);
 			$this->parent = $post->post_parent;
 			$this->avatar = $post->avatar;
 			return true;

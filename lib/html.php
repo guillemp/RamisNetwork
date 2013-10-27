@@ -18,8 +18,8 @@ function do_footer() {
 }
 
 function do_error($msg='') {
-	do_header();
-	echo $msg;
+	do_header('Error');
+	echo '<div class="error">' . $msg . '</div>';
 	do_footer();
 	die;
 }

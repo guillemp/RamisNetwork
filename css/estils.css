@@ -25,6 +25,11 @@ h3 {background:#F6F4F0;border-top:1px solid #D4D4D4;padding:6px 6px;font-size:12
 .member a {display:block;float:left;width:250px;height:100px;margin:5px;background:#EEE;}
 
 .post {margin-bottom:20px;}
+.post-avatar {float:left;width:60px;}
+.post-body {float:left;width:480px;}
+.post-name {margin-bottom:5px;}
+.post-content {margin-bottom:10px;}
+.post-links {font-size:11px;color:#666;}
 
 .logs li {margin-bottom:20px}
 
@@ -34,7 +39,7 @@ input,textarea {border:1px solid #CCC;padding:6px 4px;border-radius:3px;outline:
 input.button {padding:6px 12px;background:#E8802B;border:none;color:#fff;}
 input.button:active {background:#AAA;}
 	
-textarea.post-form {height:38px;width:468px;}
+textarea.post-form {height:38px;width:470px;}
 
 .index-buttons {margin-top:20px;}
 .index-button a {display:block;float:left;width:270px;background:#EEE;padding:50px;border-radius:10px;text-align:center;font-size:22px;}

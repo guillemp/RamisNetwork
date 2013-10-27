@@ -1,12 +1,17 @@
 <div class="post">
-	<div style="float:left;width:60px;">
+	<div class="post-avatar">
 		<a href="<?php echo profile_uri($post->author); ?>">
-			<img src="<?php echo get_avatar($post->avatar); ?>" width="50" height="50" />
+			<img src="<?php echo get_avatar($post->avatar); ?>" width="50" height="50" alt="<?php echo $post->name; ?>" />
 		</a>
 	</div>
-	<div style="float:left;width:480px;">
-		<div><a href="<?php echo profile_uri($post->author); ?>"><?php echo $post->name; ?></a></div>
-		<div><?php echo $post->content; ?></div>
+	<div class="post-body">
+		<div class="post-name"><a href="<?php echo profile_uri($post->author); ?>"><?php echo $post->name; ?></a></div>
+		<div class="post-content"><?php echo $post->content; ?></div>
+		<div class="post-links">
+			<a href="#">Like</a> · 
+			<a href="#">Comment</a> · 
+			<a href="#" style="color:#AAA;"><?php echo time_ago($post->date); ?></a>
+		</div>
 	</div>
 	<div class="clear"></div>
 </div>

@@ -40,7 +40,7 @@
 	
 	<h3>Wall</h3>
 	
-	<?php if ($post_error) echo $post_error; ?>
+	<?php if ($post_error) echo '<div class="error">' . $post_error . '</div>'; ?>
 	
 	<?php Post::print_form(); ?>
 	

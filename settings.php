@@ -26,6 +26,10 @@ do_view('settings', $data);
 do_footer();
 
 
+//
+// settings.php functions
+//
+
 function upload_avatar($current_avatar) {
 	require(LIB . 'phpthumb/ThumbLib.inc.php');
 	

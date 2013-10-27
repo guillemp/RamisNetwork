@@ -8,7 +8,6 @@ require(LIB . 'Post.php');
 // only logged users can view this
 if (!$current_user->authenticated) {
 	// check privacy options
-	
 	header('Location: ' . ROOT);
 	die;
 }
