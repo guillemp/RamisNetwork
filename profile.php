@@ -12,7 +12,7 @@ if (!$current_user->authenticated) {
 	die;
 }
 
-$id = intval($_GET['id']);
+$id = intval($_REQUEST['id']);
 if ($id == 0) do_error("Invalid arguments.");
 $user = new User();
 $user->id = $id;
@@ -25,10 +25,16 @@ if (isset($_POST['post'])) {
 	$data['post_error'] = Post::save_post($user->id);	
 }
 
-// data for view
+$data['friend_error'] = false;
+if (isset($_POST['add_friend'])) {
+	$data['friend_error'] = add_friend();
+}
+
+// data for the view
 $data['user'] = $user;
 $data['posts'] = get_posts();
 $data['friends'] = get_friends();
+$data['add_friend_button'] = add_friend_button();
 
 // load views
 do_header($user->name);
@@ -39,6 +45,53 @@ do_footer();
 //
 // profile.php functions
 //
+
+function add_friend_button() {
+	global $db, $user, $current_user;
+	
+	// can't add myself as a friend
+	if ($user->id == $current_user->id) {
+		return false;
+	}
+	
+	$friend_ids = get_friend_ids();
+	if (in_array($user->id, $friend_ids)) {
+		return false;
+	}
+	
+	$button_name = "Request friend";
+	$status = get_friend_status($current_user->id, $user->id);
+	if ($status == 1) {
+		$button_name = "Request sended";
+	}
+	
+	$button = "";
+	$button .= '<div style="margin-bottom:15px;">';
+	$button .= '<form action="profile.php" method="post">';
+	$button .= '<input type="hidden" name="from" value="' . $current_user->id . '" />';
+	$button .= '<input type="hidden" name="to" value="' . $user->id . '" />';
+	$button .= '<input type="hidden" name="id" value="' . $user->id . '" />';
+	$button .= '<input type="submit" name="add_friend" value="' . $button_name . '" class="button" style="width:200px;" />';
+	$button .= '</form>';
+	$button .= '</div>';
+	
+	return $button;
+}
+
+function add_friend() {
+	global $db, $user;
+	
+	$from = intval($_POST['from']);
+	$to = intval($_POST['to']);
+	
+	if ($db->query("INSERT INTO friends (friend_from, friend_to) VALUES ($from, $to)")) {
+		// add notify to user
+		// notify_user('friend_request');
+		header('Location: ' . profile_uri($to));
+		die;
+	}
+	return 'Error adding as a friend';
+}
 
 function get_posts() {
 	global $db, $user;
@@ -60,7 +113,7 @@ function get_posts() {
 function get_friends() {
 	global $db, $user;
 	
-	$friend_ids = $db->get_col("SELECT friend_to FROM friends WHERE friend_from = $user->id UNION SELECT friend_from FROM friends WHERE friend_to = $user->id");
+	$friend_ids = get_friend_ids($user->id);
 	if ($friend_ids) {
 		foreach ($friend_ids as $id) {
 			$friend = new User();

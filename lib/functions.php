@@ -1,5 +1,27 @@
 <?php
 
+function get_friend_status($from, $to) {
+	global $db;
+	$status = intval($db->get_var("SELECT count(*) FROM friends WHERE friend_from = $from AND friend_to = $to AND friend_status = 0"));
+	return $status;
+}
+
+function get_friend_ids($from=false) {
+	global $db, $current_user;
+	
+	$user_id = $current_user->id;
+	if ($from !== false) {
+		$user_id = $from;
+	}
+	
+	$friend_ids = $db->get_col("SELECT friend_to FROM friends WHERE friend_from = $user_id AND friend_status=1 UNION SELECT friend_from FROM friends WHERE friend_to = $user_id AND friend_status=1");
+	if ($friend_ids) {
+		return (array)$friend_ids;
+	}
+	
+	return false;
+}
+
 function do_view($name, $data=null) {
 	global $current_user;
 	

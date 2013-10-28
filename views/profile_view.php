@@ -3,9 +3,7 @@
 		<img src="<?php echo get_avatar($user->avatar); ?>" width="200" height="200" />
 	</div>
 	
-	<form>
-		<input type="submit" name="friend" value="Request friend">
-	</form>
+	<?php echo $data['add_friend_button']; ?>
 		
 	<ul class="user-menu">
 		<li><a href="#">Wall</a></li>
