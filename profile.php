@@ -20,6 +20,13 @@ if (!$user->read()) {
 	do_error("User doesn't exists.");
 }
 
+$data['view'] = 'wall';
+$data['photos'] = false;
+if (isset($_GET['view'])) {
+	$data['view'] = $_GET['view'];
+	$data['photos'] = get_photos();
+}
+
 $data['post_error'] = false;
 if (isset($_POST['post'])) {
 	$data['post_error'] = Post::save_post($user->id);	
@@ -34,7 +41,7 @@ if (isset($_POST['add_friend'])) {
 $data['user'] = $user;
 $data['posts'] = get_posts();
 $data['friends'] = get_friends();
-$data['add_friend_button'] = add_friend_button();
+$data['friend_button'] = friend_button();
 
 // load views
 do_header($user->name);
@@ -46,7 +53,11 @@ do_footer();
 // profile.php functions
 //
 
-function add_friend_button() {
+function get_photos() {
+	
+}
+
+function friend_button() {
 	global $db, $user, $current_user;
 	
 	// can't add myself as a friend
@@ -61,8 +72,8 @@ function add_friend_button() {
 	
 	$button_name = "Request friend";
 	$status = get_friend_status($current_user->id, $user->id);
-	if ($status == 1) {
-		$button_name = "Request sended";
+	if ($status > 0) {
+		$button_name = "Waiting";
 	}
 	
 	$button = "";

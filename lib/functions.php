@@ -19,7 +19,7 @@ function get_friend_ids($from=false) {
 		return (array)$friend_ids;
 	}
 	
-	return false;
+	return array();
 }
 
 function do_view($name, $data=null) {
@@ -29,13 +29,13 @@ function do_view($name, $data=null) {
 		extract($data);
 	}
 	
-	$view = VIEWS . $name . '_view.php';
+	$_view = VIEWS . $name . '_view.php';
 	
-	if (!file_exists($view)) {
-		die('File <strong>' . $view . '</strong> does not exists.');
+	if (!file_exists($_view)) {
+		die('File <strong>' . $_view . '</strong> does not exists.');
 	}
 	
-	require($view);
+	require($_view);
 }
 
 function insert_log($type, $link, $user=0, $comment='') {
