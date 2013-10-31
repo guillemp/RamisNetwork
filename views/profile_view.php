@@ -3,7 +3,7 @@
 		<img src="<?php echo get_avatar($user->avatar); ?>" width="200" height="200" alt="" />
 	</div>
 	
-	<?php echo $data['friend_button']; ?>
+	<?php echo $friend_button; ?>
 		
 	<ul class="user-menu">
 		<li><a href="<?php echo profile_uri($user->id); ?>">Wall</a></li>
@@ -61,7 +61,7 @@
 		<?php
 			if ($photos) {
 				foreach ($photos as $photos) {
-					// print photo
+					// print photos
 				}
 			} else {
 				echo 'No photos yet.';

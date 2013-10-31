@@ -12,10 +12,4 @@ do_header('Courses');
 do_view('courses', $data);
 do_footer();
 
-//
-// courses.php functions
-//
-
-
-
 ?>

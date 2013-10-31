@@ -48,13 +48,13 @@ class Post {
 		global $db;
 		
 		// insert into the database
-		if ($db->query("INSERT INTO posts (post_author, post_link, post_content, post_parent) VALUES ($this->author, $this->link, '$this->content', $this->parent)")) {
+		if ($db->query("INSERT INTO posts (post_author, post_type, post_link, post_content, post_parent) VALUES ($this->author, '$this->type', $this->link, '$this->content', $this->parent)")) {
 			return $db->insert_id;
 		}
 		return false;
 	}
 	
-	public static function save_post($link) {
+	public static function save_post($type, $link) {
 		global $db, $current_user;
 		
 		// if user is not logged in, do nothing
@@ -67,6 +67,7 @@ class Post {
 		
 		$post = new Post();
 		$post->author = $current_user->id;
+		$post->type = $type;
 		$post->link = $link;
 		$post->content = $content;
 		
@@ -74,9 +75,7 @@ class Post {
 		if ($post_id) {
 			// save activity
 			insert_log('post_new', $post_id, $post->author, $post->content);
-			// redirect to profile page
-			header('Location: ' . profile_uri($link));
-			die;
+			return false;
 		}
 		return 'Unknown error.';
 	}
@@ -93,6 +92,23 @@ class Post {
 		if (!$current_user->authenticated) return;
 		
 		do_view('post_form');
+	}
+	
+	public static function get_posts($type, $link) {
+		global $db;
+
+		$post_ids = $db->get_col("SELECT post_id FROM posts WHERE post_type = '$type' AND post_link = $link ORDER BY post_id DESC");
+		if ($post_ids) {
+			foreach ($post_ids as $id) {
+				$post = new Post();
+				$post->id = $id;
+				if ($post->read()) {
+					$posts_array[] = $post;
+				}
+			}
+			return $posts_array;
+		}
+		return false;
 	}
 }
 

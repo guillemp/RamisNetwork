@@ -9,7 +9,6 @@ authenticated_users();
 // check privacy options
 
 $id = intval($_REQUEST['id']);
-if ($id == 0) do_error("Invalid arguments.");
 $user = new User();
 $user->id = $id;
 if (!$user->read()) {
@@ -25,7 +24,7 @@ if (isset($_GET['view'])) {
 
 $data['post_error'] = false;
 if (isset($_POST['post'])) {
-	$data['post_error'] = Post::save_post($user->id);	
+	$data['post_error'] = Post::save_post('wall', $user->id);	
 }
 
 $data['friend_error'] = false;
@@ -35,7 +34,7 @@ if (isset($_POST['add_friend'])) {
 
 // data for the view
 $data['user'] = $user;
-$data['posts'] = get_posts();
+$data['posts'] = Post::get_posts('wall', $user->id);
 $data['friends'] = get_friends();
 $data['friend_button'] = friend_button();
 
@@ -100,23 +99,6 @@ function add_friend() {
 	return 'Error adding as a friend';
 }
 
-function get_posts() {
-	global $db, $user;
-	
-	$post_ids = $db->get_col("SELECT post_id FROM posts WHERE post_type = 'wall' AND post_link = $user->id ORDER BY post_id DESC");
-	if ($post_ids) {
-		foreach ($post_ids as $id) {
-			$post = new Post();
-			$post->id = $id;
-			if ($post->read()) {
-				$data[] = $post;
-			}
-		}
-		return $data;
-	}
-	return false;
-}
-
 function get_friends() {
 	global $db, $user;
 	
@@ -126,10 +108,10 @@ function get_friends() {
 			$friend = new User();
 			$friend->id = $id;
 			if ($friend->read()) {
-				$data[] = $friend;
+				$friends_array[] = $friend;
 			}
 		}
-		return $data;
+		return $friends_array;
 	}
 	return false;
 }

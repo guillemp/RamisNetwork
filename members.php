@@ -30,7 +30,7 @@ function get_users() {
 	
 	$from_where = get_where_conditions();
 	$sql = "SELECT id FROM users $from_where ORDER BY id DESC";
-	echo $sql;
+	
 	$user_ids = $db->get_col($sql);
 	if ($user_ids) {	
 		foreach ($user_ids as $id) {
@@ -64,11 +64,11 @@ function get_where_conditions() {
 	}
 	if (!empty($_GET['min_age'])) {
 		$min_age = date('Y') - intval($_GET['min_age']);
-		$conditions[] = "year(birthday) >= " . $min_age;
+		$conditions[] = "year(birthday) <= " . $min_age;
 	}
 	if (!empty($_GET['max_age'])) {
 		$max_age = date('Y') - intval($_GET['max_age']);
-		$conditions[] = "year(birthday) <= " . $max_age;
+		$conditions[] = "year(birthday) >= " . $max_age;
 	}
 	
 	$from_where = "";
