@@ -1,5 +1,12 @@
 <?php
 
+function authenticated_users() {
+	global $current_user;
+	if (!$current_user->authenticated) {
+		do_error('You can\'t acces here. Please, <a href="' . ROOT . 'register.php">register</a> to view this page.');
+	}
+}
+
 function get_friend_status($from, $to) {
 	global $db;
 	$status = intval($db->get_var("SELECT count(*) FROM friends WHERE friend_from = $from AND friend_to = $to AND friend_status = 0"));

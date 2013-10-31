@@ -1,3 +1,8 @@
+<aside class="sidebar">
+	&nbsp;
+</aside>
+
+<section class="main">
 <?php
 
 if ($logs) {
@@ -9,3 +14,4 @@ if ($logs) {
 }
 
 ?>
+</section>

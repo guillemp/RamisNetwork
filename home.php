@@ -5,11 +5,7 @@ require(LIB . 'html.php');
 require(LIB . 'User.php');
 require(LIB . 'Post.php');
 
-// only logged users can view this
-if (!$current_user->authenticated) {
-	header('Location: ' . ROOT);
-	die;
-}
+authenticated_users();
 
 $data['logs'] = get_logs();
 

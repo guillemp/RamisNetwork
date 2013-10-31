@@ -1,18 +1,19 @@
-html,body,h1,h2,h3,p,ul,li,tr,th,td,table,input,textarea,form {margin:0;padding:0;}
+html,body,h1,h2,h3,p,ul,li,tr,th,td,table,input,textarea,form,header,footer,section,aside {margin:0;padding:0;}
 body {font-size:14px;font-family:arial,sans-serif;background:#FFF} /*F6F4F0*/
 .clear {clear:both}
 a {text-decoration:none;color:#E8802B}
 ul {list-style:none}
 header {background:#555;border-bottom:0px solid #FF8400;}
 footer {padding:10px;text-align:center;}
-h1 a {color:white;float:left;padding:7px 0;font-weight:normal;font-size:22px}
 .wrap {margin:0 auto;width:760px;}
+.content {background:#FFF;padding:20px 0;}
+.sidebar {float:left;width:200px;}
+.main {float:left;width:540px;margin-left:20px;}
+
 nav.algo ul {list-style:none;float:right;}
 nav.algo li {float:left;}
 nav.algo li a {float:left;display:block;padding:10px 0;margin-left:20px;color:white;}
-section.content {background:#FFF;padding:20px 0;}
-aside.sidebar {float:left;width:200px;}
-section.main {float:left;width:540px;margin-left:20px;}
+h1 a {color:white;float:left;padding:7px 0;font-weight:normal;font-size:22px}
 h2 {font-size:180%;margin-bottom:10px;font-weight:normal;}
 h3 {background:#F6F4F0;border-top:1px solid #D4D4D4;padding:6px 6px;font-size:12px;color:#666;margin-bottom:10px;}
 .user-menu {list-style:none;margin-bottom:20px;}
@@ -21,8 +22,9 @@ h3 {background:#F6F4F0;border-top:1px solid #D4D4D4;padding:6px 6px;font-size:12
 .user-details {margin-bottom:20px;}
 .user-details p {margin:3px 0}
 
-.members {margin:-5px;}
-.member a {display:block;float:left;width:250px;height:100px;margin:0 3px 20px;}
+.members {}
+li.member {}
+li.member a {display:block;margin-bottom:30px;width:180px;float:left;position:relative;font-size:13px;}
 
 .post {margin-bottom:20px;}
 .post-avatar {float:left;width:60px;}
@@ -34,6 +36,7 @@ h3 {background:#F6F4F0;border-top:1px solid #D4D4D4;padding:6px 6px;font-size:12
 .logs li {margin-bottom:20px}
 
 div.error {background:#f00;color:#fff;padding:10px;margin-bottom:20px;}
+div.error a {text-decoration:underline;color:#fff}
 
 input,textarea {border:1px solid #CCC;padding:6px 4px;border-radius:3px;outline:none;font-size:14px;font-family:arial,sans-serif;}
 input.button {padding:6px 12px;background:#E8802B;border:none;color:#fff;}

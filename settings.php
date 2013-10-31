@@ -4,11 +4,7 @@ require('config.php');
 require(LIB . 'html.php');
 require(LIB . 'User.php');
 
-// only logged users can view this
-if (!$current_user->authenticated) {
-	header('Location: ' . ROOT);
-	die;
-}
+authenticated_users();
 
 $user = new User();
 $user->id = $current_user->id;

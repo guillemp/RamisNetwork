@@ -9,7 +9,7 @@
 
 <header>
 	<div class="wrap">
-		<h1><a href="<?php echo $home; ?>">RamisNetwork</a></h1>
+		<h1><a href="<?php echo $home_link; ?>">RamisNetwork</a></h1>
 		<nav class="algo">
 			<ul>
 				<?php if ($current_user->authenticated) {?>
@@ -20,6 +20,7 @@
 					<li><a href="<?php echo ROOT; ?>settings.php">Settings</a></li>
 					<li><a href="<?php echo ROOT; ?>login.php?action=logout">Logout</a></li>
 				<?php } else { ?>
+					<li><a href="<?php echo ROOT; ?>members.php">Members</a></li>
 					<li><a href="<?php echo ROOT; ?>register.php">Register</a></li>
 					<li><a href="<?php echo ROOT; ?>login.php">Login</a></li>
 				<?php } ?>
@@ -31,4 +32,4 @@
 </header>
 
 <div class="wrap">
-	<section class="content">
+	<div class="content">

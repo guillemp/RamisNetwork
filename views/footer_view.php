@@ -1,10 +1,11 @@
-<div class="clear"></div>
-</section>
+	<div class="clear"></div>
+</div> <!-- .content -->
 
 <footer>
 	<p>RamisNetwork &copy; 2013 by Guillem Pagès</p>
 </footer>
-</div>
+
+</div> <!-- .wrap -->
 
 </body>
 </html>

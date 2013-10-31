@@ -1,13 +1,15 @@
 <?php
 
+header('Content-type: text/html; charset=utf-8');
+
 function do_header($title='') {
 	global $current_user;
 	
 	$data['title'] = $title;
 	
-	$data['home'] = ROOT;
+	$data['home_link'] = ROOT;
 	if ($current_user->authenticated) {
-		$data['home'] = ROOT . 'home.php';
+		$data['home_link'] = ROOT . 'home.php';
 	}
 	
 	do_view('header', $data);
