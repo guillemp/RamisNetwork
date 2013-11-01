@@ -20,9 +20,8 @@ if (isset($_POST['post'])) {
 	$data['post_error'] = Post::save_post('course', $course->id);	
 }
 
-$data['join_leave_error'] = false;
 if (isset($_POST['join_leave'])) {
-	$data['join_leave_error'] = join_leave_course();	
+	join_leave_course();	
 }
 
 $data['course'] = $course;
@@ -43,6 +42,8 @@ function join_leave_course() {
 	
 	$course = intval($_POST['course']);
 	$user = intval($_POST['user']);
+	
+	// add log 'join_course' / 'leave_course'
 	
 	header('Location: ' . ROOT . 'course.php?id=' . $course);
 	die;

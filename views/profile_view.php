@@ -8,8 +8,9 @@
 	<ul class="user-menu">
 		<li><a href="<?php echo profile_uri($user->id); ?>">Wall</a></li>
 		<li><a href="<?php echo profile_uri($user->id) . '&amp;view=photos'; ?>">Photos</a></li>
-		<li><a href="<?php echo ROOT . 'messages.php?action=new&amp;to=' . $user->id; ?>">Send message</a></li>
-		<li><a href="<?php echo profile_uri($user->id); ?>">Block</a></li>
+		<?php if ($current_user->id != $user->id) { ?>
+			<li><a href="<?php echo ROOT . 'messages.php?action=new&amp;to=' . $user->id; ?>">Send message</a></li>
+		<?php } ?>
 	</ul>
 		
 	<h3>Friends</h3>

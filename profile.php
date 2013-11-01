@@ -38,6 +38,9 @@ $data['posts'] = Post::get_posts('wall', $user->id);
 $data['friends'] = get_friends();
 $data['friend_button'] = friend_button();
 
+// add new visit
+add_visit();
+
 // load views
 do_header($user->name);
 do_view('profile', $data);
@@ -47,6 +50,13 @@ do_footer();
 //
 // profile.php functions
 //
+
+function add_visit() {
+	global $db, $user, $current_user;	
+	if ($current_user->id != $user->id) {
+		$db->query("UPDATE users SET visits = visits + 1 WHERE id = $user->id");
+	}
+}
 
 function get_photos() {
 	

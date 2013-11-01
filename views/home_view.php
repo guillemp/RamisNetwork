@@ -1,5 +1,5 @@
 <aside class="sidebar">
-	&nbsp;
+	<h3>Notifications</h3>
 </aside>
 
 <section class="main">

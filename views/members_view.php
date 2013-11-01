@@ -77,7 +77,7 @@
 								<?php if ($user->course) { ?>
 									<div style="margin-bottom:3px;color:#666;font-size:12px;"><?php echo $user->course; ?></div>
 								<?php } ?>
-								<div style="margin-bottom:3px;color:#666;font-size:12px;">Age: <?php echo $user->get_age(); ?></div>
+								<div style="margin-bottom:3px;color:#666;font-size:12px;"><?php echo $user->get_age(); ?> years old</div>
 							</div>
 						</a>
 					</li>
