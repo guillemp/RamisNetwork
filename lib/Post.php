@@ -73,8 +73,8 @@ class Post {
 		
 		$post_id = $post->store();
 		if ($post_id) {
-			// save activity
 			insert_log('post_new', $post_id, $post->author, $post->content);
+			insert_notify('post_new', $post_id, $post->author, $link);
 			return false;
 		}
 		return 'Unknown error.';
@@ -83,6 +83,21 @@ class Post {
 	public function print_post() {
 		$data['post'] = $this;
 		do_view('post', $data);
+		
+	}
+	
+	public function insert_like() {
+		global $db, $current_user;
+		$like_exists = $db->get_var("SELECT count(*) FROM likes WHERE like_link = $this->id AND like_user = $current_user->id");
+		if (!$like_exists) {
+			if ($db->query("INSERT INTO likes (like_link, like_user) VALUES ($this->id, $current_user->id)")) {
+				$db->query("UPDATE posts SET post_likes = post_likes + 1 WHERE post_id = $this->id");
+				insert_log('post_like', $this->id, $current_user->id);
+				insert_notify('post_like', $this->id, $current_user->id, $this->author);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static function print_form() {

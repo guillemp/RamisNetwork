@@ -3,6 +3,8 @@
 <head>
 	<meta charset="utf-8" />
 	<title>RamisNetwork - <?php echo $title; ?></title>
+	<script src="<?php echo ROOT; ?>js/jquery-1.10.2.min.js" type="text/javascript"></script>
+	<script src="<?php echo ROOT; ?>js/functions.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo ROOT; ?>css/estils.css">
 </head>
 <body>

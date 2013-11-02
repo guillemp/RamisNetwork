@@ -27,6 +27,8 @@ do_footer();
 //
 
 function upload_avatar($current_avatar) {
+	global $user;
+	
 	require(LIB . 'phpthumb/ThumbLib.inc.php');
 	
 	$temp = $_FILES['avatar']['tmp_name'];
@@ -40,6 +42,8 @@ function upload_avatar($current_avatar) {
 		$thumb->save($path.$name, 'jpg');
 		// remove old avatar
 		@unlink($path.$current_avatar);
+		// insert activity
+		insert_log('avatar_change', 0, $user->id);
 		return $name;
 	}
 	return false;

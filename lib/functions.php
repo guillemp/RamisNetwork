@@ -3,7 +3,7 @@
 function authenticated_users() {
 	global $current_user;
 	if (!$current_user->authenticated) {
-		do_error('You can\'t acces here. Please, <a href="' . ROOT . 'register.php">register</a> to view this page.');
+		do_error('You can\'t acces here. Please, <a href="' . ROOT . 'login.php">login</a> or <a href="' . ROOT . 'register.php">register</a> to view this page.');
 	}
 }
 
@@ -29,26 +29,16 @@ function get_friend_ids($from=false) {
 	return array();
 }
 
-function do_view($name, $data=null) {
-	global $current_user;
-	
-	if (is_array($data)) {
-		extract($data);
-	}
-	
-	$_view = VIEWS . $name . '_view.php';
-	
-	if (!file_exists($_view)) {
-		die('File <strong>' . $_view . '</strong> does not exists.');
-	}
-	
-	require($_view);
-}
-
 function insert_log($type, $link, $user=0, $comment='') {
 	global $db;		
 	$log = $db->query("INSERT INTO logs (log_type, log_link, log_user, log_comment) VALUES ('$type', $link, $user, '$comment')");
 	return $log;
+}
+
+function insert_notify($type, $link, $from=0, $to=0) {
+	global $db;		
+	$notification = $db->query("INSERT INTO notifications (notification_type, notification_link, notification_from, notification_to) VALUES ('$type', $link, $from, $to)");
+	return $notification;
 }
 
 function profile_uri($id) {

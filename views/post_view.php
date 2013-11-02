@@ -8,7 +8,7 @@
 		<div class="post-name"><a href="<?php echo profile_uri($post->author); ?>"><?php echo $post->name; ?></a></div>
 		<div class="post-content"><?php echo $post->content; ?></div>
 		<div class="post-links">
-			<a href="#">Like</a> · 
+			<span id="like-<?php echo $post->id; ?>"><a href="javascript:like('<?php echo $post->id; ?>', '<?php echo $current_user->id; ?>');">Like</a></span> · 
 			<a href="#">Comment</a> · 
 			<a href="#" style="color:#AAA;"><?php echo time_ago($post->date); ?></a>
 		</div>

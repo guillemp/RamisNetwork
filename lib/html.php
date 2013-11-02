@@ -19,6 +19,22 @@ function do_footer() {
 	do_view('footer');
 }
 
+function do_view($name, $data=null) {
+	global $current_user;
+	
+	if (is_array($data)) {
+		extract($data);
+	}
+	
+	$_view = VIEWS . $name . '_view.php';
+	
+	if (!file_exists($_view)) {
+		die('File <strong>' . $_view . '</strong> does not exists.');
+	}
+	
+	require($_view);
+}
+
 function do_error($msg='') {
 	do_header('Error');
 	echo '<div class="error">' . $msg . '</div>';

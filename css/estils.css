@@ -33,7 +33,8 @@ li.member a {display:block;margin-bottom:30px;width:180px;float:left;position:re
 .post-content {margin-bottom:10px;}
 .post-links {font-size:11px;color:#666;}
 
-.logs li {margin-bottom:20px}
+ul.notifications li {margin-bottom:10px;border-bottom:1px solid #EEE;padding-bottom:10px;font-size:13px}
+ul.logs li {margin-bottom:20px}
 
 div.error {background:#f00;color:#fff;padding:10px;margin-bottom:20px;}
 div.error a {text-decoration:underline;color:#fff}

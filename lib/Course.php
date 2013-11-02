@@ -45,11 +45,8 @@ class Course {
 		$user_ids = $db->get_col("SELECT user FROM courses_users WHERE course = $id ORDER BY id DESC");
 		if ($user_ids) {
 			foreach ($user_ids as $id) {
-				$user = new User();
-				$user->id = $id;
-				if ($user->read()) {
-					$users_array[] = $user;
-				}
+				$user = new User($id);
+				$users_array[] = $user;
 			}
 			return $users_array;
 		}
