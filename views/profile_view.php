@@ -49,7 +49,7 @@
 		<?php
 			if ($posts) {
 				foreach ($posts as $post) {
-					$post->print_post();
+					echo $post->print_post();
 				}
 			} else {
 				echo 'No posts yet.';

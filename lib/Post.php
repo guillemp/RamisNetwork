@@ -1,23 +1,15 @@
 <?php
 
 class Post {
-	public $id;
-	public $author;
-	public $type;
-	public $link;
-	public $content;
-	public $date;
-	public $parent;
+	public $id = 0;
+	public $author = 0;
+	public $type = 'wall';
+	public $link = 0;
+	public $content = '';
+	public $date = false;
+	public $parent = 0;
 	
-	function __construct($id=0) {
-		$this->id = 0;
-		$this->author = 0;
-		$this->type = 'wall';
-		$this->link = 0;
-		$this->content = '';
-		$this->date = false;
-		$this->parent = 0;
-		
+	function __construct($id = 0) {	
 		if ($id > 0) {
 			$this->id = $id;
 			$this->read();
@@ -54,10 +46,39 @@ class Post {
 		return false;
 	}
 	
+	public function print_post() {
+		global $current_user;
+		
+		$data['post'] = $this;
+		$data['likes'] = get_user_likes('post', $this->id);
+		$data['likes_count'] = get_likes_count('post', $this->id);
+		
+		do_view('post', $data);
+		
+	}
+	
+	public function insert_like($type) {
+		global $db, $current_user;
+		
+		$like_exists = $db->get_var("SELECT count(*) FROM likes WHERE type = '$type' AND link = $this->id AND user = $current_user->id");
+		if (!$like_exists) {
+			if ($db->query("INSERT INTO likes (type, link, user) VALUES ('$type', $this->id, $current_user->id)")) {
+				$db->query("UPDATE posts SET post_likes = post_likes + 1 WHERE post_id = $this->id");
+				insert_log($type . '_like', $this->id, $current_user->id);
+				insert_notify($type . '_like', $this->id, $current_user->id, $this->author);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	//
+	// static methods
+	//
+	
 	public static function save_post($type, $link) {
 		global $db, $current_user;
 		
-		// if user is not logged in, do nothing
 		if (!$current_user->authenticated) return;
 		
 		$content = $db->escape(trim($_POST['content']));
@@ -78,26 +99,6 @@ class Post {
 			return false;
 		}
 		return 'Unknown error.';
-	}
-	
-	public function print_post() {
-		$data['post'] = $this;
-		do_view('post', $data);
-		
-	}
-	
-	public function insert_like() {
-		global $db, $current_user;
-		$like_exists = $db->get_var("SELECT count(*) FROM likes WHERE like_link = $this->id AND like_user = $current_user->id");
-		if (!$like_exists) {
-			if ($db->query("INSERT INTO likes (like_link, like_user) VALUES ($this->id, $current_user->id)")) {
-				$db->query("UPDATE posts SET post_likes = post_likes + 1 WHERE post_id = $this->id");
-				insert_log('post_like', $this->id, $current_user->id);
-				insert_notify('post_like', $this->id, $current_user->id, $this->author);
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	public static function print_form() {

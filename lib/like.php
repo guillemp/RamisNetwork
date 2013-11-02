@@ -26,11 +26,12 @@ if ($post->author == $current_user->id) {
 	print_error('Can\'t like own posts');
 }
 
-if (!$post->insert_like()) {
+// have to change "post" if diffrent type
+if (!$post->insert_like('post')) {
     print_error('Error inserting like');
 }
 
-echo "Like!";
+echo "Liked!";
 
 function print_error($mess) {
     echo $mess;

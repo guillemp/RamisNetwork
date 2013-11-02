@@ -12,6 +12,9 @@
 			<a href="#">Comment</a> · 
 			<a href="#" style="color:#AAA;"><?php echo time_ago($post->date); ?></a>
 		</div>
+		<?php if ($likes) { ?>
+			<div class="post-likes"><?php echo $likes; ?> <?php if ($likes_count > 1) echo 'like'; else echo 'likes'; ?> this</div>
+		<?php } ?>
 	</div>
 	<div class="clear"></div>
 </div>

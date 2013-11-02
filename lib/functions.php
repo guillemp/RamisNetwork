@@ -7,6 +7,38 @@ function authenticated_users() {
 	}
 }
 
+function get_liked($type, $link) {
+	global $db, $current_user;
+	$liked = $db->get_var("SELECT count(*) FROM likes WHERE type = '$type' AND link = $link AND user = $current_user->id");
+	if ($liked) return true;
+	return false;
+}
+
+function get_likes_count($type, $link) {
+	global $db;
+	return intval($db->get_var("SELECT count(*) FROM likes WHERE type = '$type' AND link = $link"));
+}
+
+function get_user_likes($type, $link) {
+	global $db, $current_user;
+	
+	$user_links = array();
+	require_once(LIB  . 'User.php');
+	
+	$users = $db->get_col("SELECT user FROM likes WHERE type = '$type' AND link = $link");
+	if ($users) {
+		foreach ($users as $user_id) {
+			$user = new User($user_id);
+			if ($current_user->id == $user->id) {
+				$user_links[] = 'You';
+			} else {
+				$user_links[] = '<a href="' . profile_uri($user->id) . '">' . $user->name . '</a>';
+			}
+		}
+	}
+	return implode(', ', $user_links);
+}
+
 function get_friend_status($from, $to) {
 	global $db;
 	$status = intval($db->get_var("SELECT count(*) FROM friends WHERE friend_from = $from AND friend_to = $to AND friend_status = 0"));

@@ -123,7 +123,7 @@ function get_user_new_log($log) {
 	global $db;
 	
 	$user = new User($log->log_user);
-	return '<img src="' . ROOT . 'img/user_add.png">&nbsp;<a href="' . profile_uri($user->id) . '">' . $user->name . '</a> has been registered';
+	return '<img src="' . ROOT . 'img/user_new.png">&nbsp;<a href="' . profile_uri($user->id) . '">' . $user->name . '</a> has been registered';
 }
 
 function get_post_new_log($log) {
@@ -133,7 +133,7 @@ function get_post_new_log($log) {
 	$post = new Post($log->log_link);
 	$user_to = new User($post->link);
 	
-	return '<img src="' . ROOT . 'img/comment.png">&nbsp;<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a> wrote a message to <a href="' . profile_uri($post->link) . '">' . $user_to->name . '</a><br/><div style="margin-left:30px;">' . $post->content . '</div>';
+	return '<img src="' . ROOT . 'img/post_new.png">&nbsp;<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a> wrote a message to <a href="' . profile_uri($post->link) . '">' . $user_to->name . '</a><br/><div style="margin-left:30px;">' . $post->content . '</div>';
 }
 
 ?>
