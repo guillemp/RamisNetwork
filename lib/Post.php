@@ -54,7 +54,6 @@ class Post {
 		$data['likes_count'] = get_likes_count('post', $this->id);
 		
 		do_view('post', $data);
-		
 	}
 	
 	public function insert_like($type) {

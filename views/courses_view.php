@@ -1,3 +1,7 @@
-<?php foreach ($courses as $course) { ?>
-	<a href="course.php?id=<?php echo $course->id ?>"><?php echo $course->name ?></a><br/>
+<?php if ($courses) { ?>
+	<ul class="courses">
+	<?php foreach ($courses as $course) { ?>
+		<li><a href="course.php?id=<?php echo $course->id ?>"><?php echo $course->name ?></a></li>
+	<? } ?>
+	</ul>
 <? } ?>

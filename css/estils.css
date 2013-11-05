@@ -29,7 +29,7 @@ li.member a {display:block;margin-bottom:30px;width:180px;float:left;position:re
 
 .post {margin-bottom:20px;}
 .post-avatar {float:left;width:60px;}
-.post-body {float:left;width:480px;}
+.post-body {float:left;width:480px;background:#EEE;}
 .post-name {margin-bottom:5px;}
 .post-content {margin-bottom:10px;}
 .post-links {font-size:11px;color:#666;}
@@ -37,6 +37,10 @@ li.member a {display:block;margin-bottom:30px;width:180px;float:left;position:re
 
 ul.notifications li {margin-bottom:10px;border-bottom:1px solid #EEE;padding-bottom:10px;font-size:13px}
 ul.logs li {margin-bottom:20px}
+
+ul.courses {}
+ul.courses li a {display:block;background:#EEE;padding:10px 20px;margin-bottom:10px;border-radius:5px;}
+ul.courses li a:hover {background:#DDD;}
 
 div.error {background:#f00;color:#fff;padding:10px;margin-bottom:20px;}
 div.error a {text-decoration:underline;color:#fff}

@@ -29,7 +29,7 @@ function send_message() {
 	$user = new User();
 	$user->id = intval($_GET['to']);
 	if ($user->read()) {
-		return Post::save_post('private', $user->id));
+		return Post::save_post('private', $user->id);
 	}
 	return false;
 }

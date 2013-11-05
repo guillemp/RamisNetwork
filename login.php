@@ -3,14 +3,16 @@
 require('config.php');
 require(LIB . 'html.php');
 
-$data['error'] = false;
+$error = false;
 if (isset($_POST['login'])) {
-	$data['error'] = do_login();
+	$error = do_login();
 }
 
-if (isset($_GET['action'])) {
+if (!empty($_GET['action']) && $_GET['action'] == 'logout') {
 	$current_user->logout();
 }
+
+$data['error'] = $error;
 
 do_header('Login');
 do_view('login', $data);
