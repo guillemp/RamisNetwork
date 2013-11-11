@@ -11,6 +11,7 @@
 		<div class="login-field"><input type="password" name="password" id="password" /></div>
 		
 		<div>
+			<input type="hidden" name="return" value="<?php echo $return; ?>" />
 			<input type="submit" name="login" value="Login" class="button" style="float:left" />
 			<div style="float:right"><input type="checkbox" name="remember" id="remember" value="1" />&nbsp;&nbsp;<label for="remember">Remember me</label></div>
 			<div class="clear"></div>
@@ -19,5 +20,5 @@
 </form>
 
 <div class="forgot">
-	<a href="">Forgot my password</a>
+	<a href="#todo">Forgot my password</a>
 </div>

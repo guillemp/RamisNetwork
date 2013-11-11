@@ -43,12 +43,14 @@ class User {
 		
 		if ($this->id > 0) {
 			// is an update
-			if ($db->query("UPDATE users SET avatar='$this->avatar' WHERE id = $this->id")) {
+			if ($db->query("UPDATE users SET name='$this->name', lastname='$this->lastname', email='$this->email', birthday='$this->birthday', gender=$this->gender, avatar='$this->avatar' WHERE id = $this->id")) {
 				return true;
 			}
 		} else {
 			// is an insert
 			if ($db->query("INSERT INTO users (name, lastname, email, password, birthday, gender) VALUES ('$this->name', '$this->lastname', '$this->email', '$this->password', '$this->birthday', $this->gender)")) {
+				// Insert a new activity
+				insert_log('user_new', 0, $db->insert_id);
 				return $db->insert_id;
 			}
 		}
@@ -69,6 +71,21 @@ class User {
 			case 2: return 'Female';
 			default: return 'Unknown';
 		}
+	}
+	
+	public static function save_user() {
+		global $db;
+
+		$user = new User();
+		$user->name = $db->escape($_POST['name']);
+		$user->lastname = $db->escape($_POST['lastname']);
+		$user->email = $db->escape(trim($_POST['email']));
+		$user->password = md5(trim($_POST['password']));
+		$user->birthday = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
+		$user->gender = ($_POST['gender'] == 'male') ? 1 : 2;
+
+		// insert user into the DB
+		return $user->store();
 	}
 	
 	// return an array of ids

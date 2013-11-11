@@ -1,9 +1,9 @@
 <div class="sidebar">
 	<h3>Search for people</h3>
 	<form action="<?php echo ROOT; ?>members.php" method="get">
-		<div><input type="text" name="name" value="<?php echo $input_name; ?>" placeholder="Name" /></div>
-		<div><input type="text" name="lastname" value="<?php echo $input_lastname; ?>" placeholder="Last name" /></div>
-		<div>
+		<div class="search-field"><input type="text" name="name" value="<?php echo $input_name; ?>" placeholder="Name" /></div>
+		<div class="search-field"><input type="text" name="lastname" value="<?php echo $input_lastname; ?>" placeholder="Last name" /></div>
+		<div class="search-field">
 			<select name="gender">
 				<option value="">Gender</option>
 				<?php if ($input_gender == 1) { ?>
@@ -18,7 +18,7 @@
 				<?php } ?>
 			</select>
 		</div>
-		<div>
+		<div class="search-field">
 			<select name="course">
 				<option value="">Course</option>
 				<?php
@@ -34,7 +34,7 @@
 				?>
 			</select>
 		</div>
-		<div>
+		<div class="search-field">
 			<select name="min_age">
 				<option value="">Min age</option>
 				<?php
@@ -60,7 +60,7 @@
 				?>
 			</select>
 		</div>
-		<div><input type="submit" value="Search" class="button" /> <a href="<?php echo ROOT; ?>members.php">Clear search</a></div>
+		<div class="search-submit"><input type="submit" value="Search" class="button" /></div>
 	</form>
 </div>
 

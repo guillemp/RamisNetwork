@@ -4,18 +4,51 @@ require('config.php');
 require(LIB . 'html.php');
 require(LIB . 'User.php');
 
-$data['error'] = false;
-if (isset($_POST['register'])) {
-	$data['error'] = check_form();
-	if ($data['error'] === false) {
-		save_user();
+$form_error = false;
+
+if (isset($_POST['register'])) {	
+	// Check fields if the are correct
+	$form_error = check_form();
+	
+	if ($form_error === false) {
+		// if it's all ok, save user
+		$user_id = User::save_user();
+		
+		// now, login the user
+		$user = new User();
+		$user->id = $user_id;
+		if ($user->read()) {
+			$current_user->authenticate($user->email, $user->password);
+			// authenticated, redirect to home
+			header('Location: ' . ROOT . 'home.php');
+			die;
+		}
 	}
 }
+
+// Pass data to the view
+$data['error'] = $form_error;
 
 do_header('Register');
 do_view('register', $data);
 do_footer();
 
+//
+// register.php functions
+//
+
+function save_user() {
+	$user = new User();
+	$user->name = $db->escape($_POST['name']);
+	$user->lastname = $db->escape($_POST['lastname']);
+	$user->email = $db->escape(trim($_POST['email']));
+	$user->password = md5(trim($_POST['password']));
+	$user->birthday = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
+	$user->gender = ($_POST['gender'] == 'male') ? 1 : 2;
+
+	// insert user into the DB
+	return $user->store();
+}
 
 function check_form() {
 	if (empty($_POST['name'])) {
@@ -43,49 +76,6 @@ function check_form() {
 		return 'Please, select your gender';
 	}
 	return false;
-}
-
-function valid_email($email) {
-	$parts = explode("@", trim($email));
-	if ($parts[1] == 'iesjoanramis.org') {
-		return true;
-	}
-	return false;
-}
-
-function email_exists($email) {
-	global $db;
-	$exists = intval($db->get_var("SELECT count(*) FROM users WHERE email='$email'"));
-	if ($exists) {
-		return true;
-	}
-	return false;
-}
-
-function save_user() {
-	global $db;
-	
-	$user = new User();
-	$user->name = $db->escape($_POST['name']);
-	$user->lastname = $db->escape($_POST['lastname']);
-	$user->email = $db->escape(trim($_POST['email']));
-	$user->password = md5(trim($_POST['password']));
-	$user->birthday = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
-	$user->gender = ($_POST['gender'] == 'male') ? 1 : 2;
-	
-	// insert user into the DB
-	$new_user_id = $user->store();
-	
-	if ($new_user_id) {
-		// save activity & notification
-		insert_log('user_new', 0, $new_user_id);
-		//insert_notify();
-		
-		// redirect to profile page
-		header('Location: ' . profile_uri($new_user_id));
-		die;
-	}
-	return 'Unknown error.';
 }
 
 ?>

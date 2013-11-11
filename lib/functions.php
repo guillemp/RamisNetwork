@@ -1,9 +1,26 @@
 <?php
 
+function valid_email($email) {
+	$parts = explode("@", trim($email));
+	if ($parts[1] == 'iesjoanramis.org') {
+		return true;
+	}
+	return false;
+}
+
+function email_exists($email) {
+	global $db;
+	$exists = intval($db->get_var("SELECT count(*) FROM users WHERE email='$email'"));
+	if ($exists) {
+		return true;
+	}
+	return false;
+}
+
 function authenticated_users() {
 	global $current_user;
 	if (!$current_user->authenticated) {
-		do_error('You can\'t acces here. Please, <a href="' . ROOT . 'login.php">login</a> or <a href="' . ROOT . 'register.php">register</a> to view this page.');
+		do_error('You can\'t acces here. Please, <a href="' . ROOT . 'login.php?return=' . $_SERVER['REQUEST_URI'] . '">login</a> or <a href="' . ROOT . 'register.php">register</a> to view this page.');
 	}
 }
 

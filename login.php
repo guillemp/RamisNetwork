@@ -13,6 +13,7 @@ if (!empty($_GET['action']) && $_GET['action'] == 'logout') {
 }
 
 $data['error'] = $error;
+$data['return'] = !empty($_GET['return']) ? $_GET['return'] : '';
 
 do_header('Login');
 do_view('login', $data);
@@ -33,8 +34,12 @@ function do_login() {
 	if ($current_user->authenticate($email, md5($password), $remember) == false) {
 		return 'Invalid email or password.';	
 	}
-	// authenticated, redirect to home
-	header('Location: ' . ROOT . 'home.php');
+	
+	if (!empty($_POST['return'])) {
+		header('Location: ' . $_POST['return']);
+	} else {
+		header('Location: ' . ROOT . 'home.php');
+	}	
 	die;
 }
 

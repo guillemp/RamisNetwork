@@ -1,4 +1,4 @@
-html,body,h1,h2,h3,p,ul,li,tr,th,td,table,input,textarea,form,header,footer,section,aside {margin:0;padding:0;}
+html,body,h1,h2,h3,p,ul,li,tr,th,td,table,input,textarea,form,header,footer,section,aside,fieldset {margin:0;padding:0;}
 body {font-size:14px;font-family:arial,sans-serif;background:#FFF} /*F6F4F0*/
 .clear {clear:both}
 a {text-decoration:none;color:#E8802B}
@@ -42,14 +42,15 @@ ul.courses {}
 ul.courses li a {display:block;background:#EEE;padding:10px 20px;margin-bottom:10px;border-radius:5px;}
 ul.courses li a:hover {background:#DDD;}
 
+div.done {background:green;color:#fff;padding:10px;margin-bottom:20px;}
 div.error {background:#f00;color:#fff;padding:10px;margin-bottom:20px;}
-div.error a {text-decoration:underline;color:#fff}
+div.error a, div.done a {text-decoration:underline;color:#fff}
 
 input,textarea {border:1px solid #CCC;padding:6px 4px;border-radius:3px;outline:none;font-size:14px;font-family:arial,sans-serif;}
 input.button {padding:6px 12px;background:#E8802B;border:none;color:#fff;}
 input.button:active {background:#AAA;}
-	
 textarea.post-form {height:38px;width:470px;}
+fieldset {margin-bottom:10px;padding:20px;border:1px solid #CCC;border-radius:10px;}
 
 .index-buttons {margin-top:20px;}
 .index-button a {display:block;float:left;width:270px;background:#EEE;padding:50px;border-radius:10px;text-align:center;font-size:22px;}
@@ -62,3 +63,7 @@ textarea.post-form {height:38px;width:470px;}
 .login-field input {width:290px;}
 .login-submit {background:#EEE;padding:20px;}
 .forgot {text-align:center;margin-top:10px;}
+
+.search-field {margin-bottom:5px;}
+.search-submit {background:#EEE;padding:5px;}
+.search-field input {width:190px;}
