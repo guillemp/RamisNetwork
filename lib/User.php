@@ -43,7 +43,7 @@ class User {
 		
 		if ($this->id > 0) {
 			// is an update
-			if ($db->query("UPDATE users SET name='$this->name', lastname='$this->lastname', email='$this->email', birthday='$this->birthday', gender=$this->gender, avatar='$this->avatar' WHERE id = $this->id")) {
+			if ($db->query("UPDATE users SET name='$this->name', lastname='$this->lastname', email='$this->email', password='$this->password', birthday='$this->birthday', gender=$this->gender, avatar='$this->avatar' WHERE id = $this->id")) {
 				return true;
 			}
 		} else {

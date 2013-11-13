@@ -10,7 +10,7 @@
 		<div class="post-links">
 			<span id="like-<?php echo $post->id; ?>"><a href="javascript:like('<?php echo $post->id; ?>', '<?php echo $current_user->id; ?>');">Like</a></span> · 
 			<a href="#">Comment</a> · 
-			<a href="#" style="color:#AAA;"><?php echo time_ago($post->date); ?></a>
+			<a href="<?php echo ROOT; ?>post.php?id=<?php echo $post->id; ?>" style="color:#AAA;"><?php echo time_ago($post->date); ?></a>
 		</div>
 		<?php if ($likes) { ?>
 			<div class="post-likes"><?php echo $likes; ?> <?php if ($likes_count > 1) echo 'like'; else echo 'likes'; ?> this</div>

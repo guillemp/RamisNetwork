@@ -40,14 +40,16 @@ function save_settings() {
 	if ($user->email != trim($_POST['email']) && email_exists($_POST['email'])) {
 		return array('error' => 'This email is already taken');
 	}
-	/*
-	if (empty($_POST['password'])) {
-		return 'Please, enter a password';
+	if (!empty($_POST['password']) || !empty($_POST['password2'])) {
+		if (trim($_POST['password']) != trim($_POST['password2'])) {
+			return array('error' => 'Passwords doesn\'t match');
+		}
+		if (strlen(trim($_POST['password'])) <= 3) {
+			return array('error' => 'Please, enter a password greater than 3');
+		}
+		// set new password
+		$user->password = md5(trim($_POST['password']));
 	}
-	if (strlen(trim($_POST['password'])) <= 3) {
-		return 'Please, enter a password greater than 3';
-	}
-	*/
 	if (empty($_POST['day']) || empty($_POST['month']) || empty($_POST['year'])) {
 		return array('error' => 'Please, enter your birthday');
 	}
@@ -58,7 +60,6 @@ function save_settings() {
 	$user->name = $db->escape($_POST['name']);
 	$user->lastname = $db->escape($_POST['lastname']);
 	$user->email = $db->escape(trim($_POST['email']));
-	$user->password = md5(trim($_POST['password']));
 	$user->birthday = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
 	$user->gender = ($_POST['gender'] == 'male') ? 1 : 2;
 	$user->avatar = upload_avatar();
@@ -73,13 +74,17 @@ function save_settings() {
 function upload_avatar() {
 	global $db, $user;
 	
-	require(LIB . 'phpthumb/ThumbLib.inc.php');
-	
 	$temp = $_FILES['avatar']['tmp_name'];
 	$path = PATH . 'img/avatars/';
-	$name = uniqid().'.jpg';	
+	$name = uniqid().'.jpg';
+	
+	// no avatar, return the old one
+	if (empty($temp)) return $user->avatar;
 	
 	if (is_uploaded_file($temp)) {
+		// include phpthumb library
+		require(LIB . 'phpthumb/ThumbLib.inc.php');
+		
 		// Create a thumbnail of 200x200
 		$thumb = PhpThumbFactory::create($temp);
 		$thumb->adaptiveResize(200, 200);

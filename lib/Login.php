@@ -1,10 +1,16 @@
 <?php
 
+/* Guillem Pagès
+ * TODO: add more security
+ *
+ */
+
 class Login {
 	public $id;
 	public $name;
 	public $avatar;
 	public $authenticated;
+	private $k = 482390;
 	
 	function __construct() {
 		global $db;
@@ -33,6 +39,7 @@ class Login {
 		$user = $db->get_row("SELECT id, name, password, avatar FROM users WHERE email = '$email' LIMIT 1");
 		if ($user) {
 			if ($user->password == $md5pass) {
+				//$key = md5($user->id.$this->k);
 				$this->id = $user->id;
 				$this->name = $user->name;
 				$this->avatar = $user->avatar;
