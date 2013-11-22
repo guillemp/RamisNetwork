@@ -4,6 +4,7 @@ require('config.php');
 require(LIB . 'html.php');
 require(LIB . 'User.php');
 require(LIB . 'Post.php');
+require(LIB . 'Photo.php');
 
 authenticated_users();
 // check privacy options
@@ -19,12 +20,17 @@ $data['view'] = 'wall';
 $data['photos'] = false;
 if (isset($_GET['view'])) {
 	$data['view'] = $_GET['view'];
-	$data['photos'] = get_photos();
+	$data['photos'] = Photo::get_photos('wall', $user->id);
 }
 
 $data['post_error'] = false;
 if (isset($_POST['post'])) {
 	$data['post_error'] = Post::save_post('wall', $user->id);	
+}
+
+$data['photo_error'] = false;
+if (isset($_POST['upload'])) {
+	$data['photo_error'] = Photo::save_photo('wall', $user->id);	
 }
 
 $data['friend_error'] = false;
@@ -56,10 +62,6 @@ function add_visit() {
 	if ($current_user->id != $user->id) {
 		$db->query("UPDATE users SET visits = visits + 1 WHERE id = $user->id");
 	}
-}
-
-function get_photos() {
-	
 }
 
 function friend_button() {

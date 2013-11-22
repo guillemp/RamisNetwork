@@ -14,7 +14,6 @@ class Post {
 			$this->id = $id;
 			$this->read();
 		}
-
 	}
 	
 	public function read() {

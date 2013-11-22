@@ -59,10 +59,14 @@
 		
 		<h3>Photos</h3>
 		
+		<?php if ($photo_error) echo '<div class="error">' . $photo_error . '</div>'; ?>
+		
+		<?php Photo::print_form(); ?>
+		
 		<?php
 			if ($photos) {
-				foreach ($photos as $photos) {
-					// print photos
+				foreach ($photos as $photo) {
+					echo '<img src="' . $photo->src() .'" width="100" height="80" />';
 				}
 			} else {
 				echo 'No photos yet.';
