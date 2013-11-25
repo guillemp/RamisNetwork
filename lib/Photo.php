@@ -42,7 +42,7 @@ class Photo {
 	}
 	
 	public function src() {
-		return ROOT  . 'img/photos/' . $this->name;
+		return ROOT  . 'img/photos/thumb_' . $this->name . '.jpg';
 	}
 	
 	// static functions
@@ -72,7 +72,6 @@ class Photo {
 		$photo_id = $photo->store();
 		if ($photo_id) {
 			insert_log('photo_new', $photo_id, $photo->author, $photo->name);
-			//insert_notify('post_new', $post_id, $post->author, $link);
 			return false;
 		}
 		return 'Unknown error.';
@@ -81,22 +80,30 @@ class Photo {
 	public static function upload_photo() {
 		
 		$temp = $_FILES['photo']['tmp_name'];
-		$name = 'photo_' . uniqid() . '.jpg';
-		$path = PATH . 'img/photos/';
 		
 		if (empty($temp)) return false;
+		
+		$uniqid = uniqid(true);
+		
+		$photo_b = 'photo_' . $uniqid  . '.jpg';
+		$photo_s = 'thumb_' . $uniqid  . '.jpg';
+		
+		$path = PATH . 'img/photos/';
 
 		if (is_uploaded_file($temp)) {
 			// include phpthumb library
 			require(LIB . 'phpthumb/ThumbLib.inc.php');
-
-			// max photo size: 640 x 480
+			
 			$thumb = PhpThumbFactory::create($temp);
 			$thumb->resize(640, 480);
-			$thumb->save($path.$name, 'jpg');
+			$thumb->save($path.$photo_b, 'jpg');
+			
+			$thumb = PhpThumbFactory::create($temp);
+			$thumb->resize(180, 135);
+			$thumb->save($path.$photo_s, 'jpg');
 
 			// I return the name
-			return $name;
+			return $uniqid;
 		}
 		return false;
 	}

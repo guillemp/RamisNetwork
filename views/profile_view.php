@@ -66,7 +66,7 @@
 		<?php
 			if ($photos) {
 				foreach ($photos as $photo) {
-					echo '<img src="' . $photo->src() .'" width="100" height="80" />';
+					echo '<a href="#todo"><img src="' . $photo->src() .'" width="180" height="135" /></a>';
 				}
 			} else {
 				echo 'No photos yet.';
