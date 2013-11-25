@@ -1,5 +1,7 @@
 <div class="sidebar">
-	<?php echo $join_leave; ?>
+	<div class="avatar">
+		<img src="<?php echo ROOT; ?>img/course.jpg" width="200" height="200" alt="" />
+	</div>
 	
 	<h3>Members</h3>
 	
@@ -18,6 +20,10 @@
 
 <div class="main">
 	<h2><?php echo $course->name; ?></h2>
+	
+	<?php if ($course->description) { ?>
+		<p class="desc"><?php echo $course->description; ?></p>
+	<?php } ?>
 	
 	<h3>Wall</h3>
 	

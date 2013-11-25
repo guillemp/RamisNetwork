@@ -6,9 +6,8 @@ require(LIB . 'Post.php');
 
 authenticated_users();
 
-$id = intval($_GET['id']);
 $post = new Post();
-$post->id = $id;
+$post->id = intval($_GET['id']);
 if (!$post->read()) {
 	do_error("Post doesn't exists.");
 }

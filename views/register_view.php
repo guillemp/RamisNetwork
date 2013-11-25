@@ -15,6 +15,22 @@
 	
 		<label for="password">Password:</label>
 		<div class="login-field"><input type="password" name="password" id="password" /></div>
+		
+		<label for="course">Course:</label>
+		<div class="login-field">
+			<select name="course">
+				<option value="">Course</option>
+				<?php
+					foreach ($courses as $course) {
+						$checked = '';
+						if ($course->id == $_POST['course']) {
+							$checked = ' selected="selected"';
+						}
+						echo '<option value="' . $course->id . '"' . $checked . '>' . $course->name . '</option>';
+					}
+				?>
+			</select>
+		</div>
 	
 		<label>Birthday:</label>
 		<div class="login-field">

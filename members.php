@@ -5,6 +5,7 @@ require(LIB . 'html.php');
 require(LIB . 'User.php');
 require(LIB . 'Course.php');
 
+// viewable to everyone
 //authenticated_users();
 
 $data['input_name'] = !empty($_GET['name']) ? $_GET['name'] : '';

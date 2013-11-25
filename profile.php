@@ -6,12 +6,11 @@ require(LIB . 'User.php');
 require(LIB . 'Post.php');
 require(LIB . 'Photo.php');
 
+// TODO: check privacy options
 authenticated_users();
-// check privacy options
 
-$id = intval($_REQUEST['id']);
 $user = new User();
-$user->id = $id;
+$user->id = intval($_REQUEST['id']);
 if (!$user->read()) {
 	do_error("User doesn't exists.");
 }

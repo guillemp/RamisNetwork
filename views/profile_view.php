@@ -30,10 +30,10 @@
 <section class="main">
 	<div class="user-details">
 		<h2><?php echo $user->name; ?> <?php echo $user->lastname; ?></h2>
-		<p>Birthday: <?php echo date("F j, Y", $user->birthday); ?></p>
+		<p>Birthday: <?php echo date("F j", $user->birthday); ?></p>
 		<p>Gender: <a href="<?php echo search('gender', $user->gender); ?>"><?php echo $user->get_gender(); ?></a></p>
 		<?php if ($user->course) { ?>
-			<p>Course: <a href="<?php echo search('course', $user->course_id); ?>"><?php echo $user->course; ?></a></p>
+			<p>Course: <a href="<?php echo search('course', $user->course); ?>"><?php echo $user->course_name; ?></a></p>
 		<? } ?>
 		<p>Age: <?php echo $user->get_age(); ?></p>
 	</div>

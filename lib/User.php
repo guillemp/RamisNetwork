@@ -10,7 +10,7 @@ class User {
 	public $gender; // 1=Male, 2=Female
 	public $avatar;
 	public $course;
-	public $course_id;
+	public $course_name;
 	
 	function __construct($id=0) {
 		if ($id > 0) {
@@ -31,8 +31,8 @@ class User {
 			$this->birthday = strtotime($user->birthday);
 			$this->gender = $user->gender;
 			$this->avatar = $user->avatar;
-			$this->course = $user->course_name;
-			$this->course_id = $user->course_id;
+			$this->course = $user->course;
+			$this->course_name = $user->course_name;
 			return true;
 		}
 		return false;
@@ -43,12 +43,12 @@ class User {
 		
 		if ($this->id > 0) {
 			// is an update
-			if ($db->query("UPDATE users SET name='$this->name', lastname='$this->lastname', email='$this->email', password='$this->password', birthday='$this->birthday', gender=$this->gender, avatar='$this->avatar' WHERE id = $this->id")) {
+			if ($db->query("UPDATE users SET name='$this->name', lastname='$this->lastname', email='$this->email', password='$this->password', birthday='$this->birthday', gender=$this->gender, avatar='$this->avatar', course=$this->course WHERE id = $this->id")) {
 				return true;
 			}
 		} else {
 			// is an insert
-			if ($db->query("INSERT INTO users (name, lastname, email, password, birthday, gender) VALUES ('$this->name', '$this->lastname', '$this->email', '$this->password', '$this->birthday', $this->gender)")) {
+			if ($db->query("INSERT INTO users (name, lastname, email, password, birthday, gender, course) VALUES ('$this->name', '$this->lastname', '$this->email', '$this->password', '$this->birthday', $this->gender, $this->course)")) {
 				// Insert a new activity
 				insert_log('user_new', 0, $db->insert_id);
 				return $db->insert_id;
@@ -81,8 +81,9 @@ class User {
 		$user->lastname = $db->escape($_POST['lastname']);
 		$user->email = $db->escape(trim($_POST['email']));
 		$user->password = md5(trim($_POST['password']));
-		$user->birthday = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
+		$user->birthday = intval($_POST['year']) . '-' . intval($_POST['month']) . '-' . intval($_POST['day']);
 		$user->gender = ($_POST['gender'] == 'male') ? 1 : 2;
+		$user->course = intval($_POST['course']);
 
 		// insert user into the DB
 		return $user->store();

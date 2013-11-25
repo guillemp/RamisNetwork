@@ -3,24 +3,19 @@
 require('config.php');
 require(LIB . 'html.php');
 require(LIB . 'User.php');
+require(LIB . 'Course.php');
 
 $form_error = false;
 
-if (isset($_POST['register'])) {	
-	// Check fields if the are correct
+if (isset($_POST['register'])) {
+	// form validation
 	$form_error = check_form();
 	
 	if ($form_error === false) {
-		// if it's all ok, save user
-		$user_id = User::save_user();
-		
-		// now, login the user
-		$user = new User();
-		$user->id = $user_id;
-		if ($user->read()) {
-			$current_user->authenticate($user->email, $user->password);
-			// authenticated, redirect to home
-			header('Location: ' . ROOT . 'home.php');
+		// save the new user		
+		$new_user_id = User::save_user();
+		if ($new_user_id > 0) {
+			header('Location: ' . ROOT . 'register.php?done=1');
 			die;
 		}
 	}
@@ -28,28 +23,20 @@ if (isset($_POST['register'])) {
 
 // Pass data to the view
 $data['error'] = $form_error;
+$data['courses'] = Course::get_courses();
 
 do_header('Register');
-do_view('register', $data);
-do_footer();
 
-//
-// register.php functions
-//
-
-function save_user() {
-	$user = new User();
-	$user->name = $db->escape($_POST['name']);
-	$user->lastname = $db->escape($_POST['lastname']);
-	$user->email = $db->escape(trim($_POST['email']));
-	$user->password = md5(trim($_POST['password']));
-	$user->birthday = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
-	$user->gender = ($_POST['gender'] == 'male') ? 1 : 2;
-
-	// insert user into the DB
-	return $user->store();
+if (empty($_GET['done'])) {
+	do_view('register', $data);
+} else {
+	do_view('register_done');
 }
 
+do_footer();
+
+
+// form validation
 function check_form() {
 	if (empty($_POST['name'])) {
 		return 'Please, enter your name';
@@ -68,6 +55,9 @@ function check_form() {
 	}
 	if (strlen(trim($_POST['password'])) <= 3) {
 		return 'Please, enter a password greater than 3';
+	}
+	if (empty($_POST['course'])) {
+		return 'Please, select your course';
 	}
 	if (empty($_POST['day']) || empty($_POST['month']) || empty($_POST['year'])) {
 		return 'Please, enter your birthday';

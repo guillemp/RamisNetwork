@@ -14,9 +14,12 @@ footer {padding:10px 0;text-align:center;font-size:12px;color:#666;border-top:1p
 nav.algo ul {list-style:none;float:right;}
 nav.algo li {float:left;}
 nav.algo li a {float:left;display:block;padding:10px 0;margin-left:20px;color:white;}
+
 h1 a {color:white;float:left;padding:7px 0;font-weight:normal;font-size:22px}
 h2 {font-size:180%;margin-bottom:10px;font-weight:normal;}
 h3 {background:#F6F4F0;border-top:1px solid #D4D4D4;padding:6px 6px;font-size:12px;color:#666;margin-bottom:10px;}
+.desc {margin-bottom:15px;font-size:120%;margin-top:-5px;}
+
 .user-menu {list-style:none;margin-bottom:20px;}
 .user-menu a {display:block;padding:5px;border-bottom:1px solid #EEE;}
 .avatar {margin-bottom:20px;height:200px;}
@@ -47,10 +50,12 @@ div.error {background:#f00;color:#fff;padding:8px 10px;margin-bottom:10px;}
 div.error a, div.done a {text-decoration:underline;color:#fff}
 
 input,textarea {background:#fafafa;border:1px solid #dbdbdb;padding:6px 4px;border-radius:3px;outline:none;font-size:14px;font-family:arial,sans-serif;}
-input.button {padding:6px 12px;background:#E8802B;border:none;color:#fff;}
+input.button {padding:5px 12px;background:#E8802B;border:none;color:#fff;}
 input.button:active {background:#AAA;}
 textarea.post-form {height:38px;width:470px;}
 fieldset {background:#FFF;margin-bottom:10px;padding:20px;border:1px solid #CCC;border-radius:10px;}
+input:focus {border:1px solid #BBB;}
+input.button:focus {border:none}
 
 .index-buttons {margin-top:20px;}
 .index-button a {display:block;float:left;width:270px;background:#EEE;padding:50px;border-radius:10px;text-align:center;font-size:22px;}

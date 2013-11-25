@@ -3,6 +3,7 @@
 class Course {
 	public $id = 0;
 	public $name = '';
+	public $description = '';
 	
 	function __construct($id=0) {
 		if ($id > 0) {
@@ -18,6 +19,7 @@ class Course {
 		if ($course) {
 			$this->id = $course->course_id;
 			$this->name = $course->course_name;
+			$this->description = $course->course_description;
 			return true;
 		}
 		return false;
@@ -32,6 +34,7 @@ class Course {
 				$course = new Course();
 				$course->id = $c->course_id;
 				$course->name = $c->course_name;
+				$course->description = $c->course_description;
 				$courses_array[] = $course;
 			}
 			return $courses_array;
@@ -42,7 +45,7 @@ class Course {
 	public static function get_users($id) {
 		global $db;
 
-		$user_ids = $db->get_col("SELECT user FROM courses_users WHERE course = $id ORDER BY id DESC");
+		$user_ids = $db->get_col("SELECT id FROM users WHERE course = $id ORDER BY id DESC");
 		if ($user_ids) {
 			foreach ($user_ids as $id) {
 				$user = new User($id);

@@ -92,8 +92,8 @@ class Post {
 		
 		$post_id = $post->store();
 		if ($post_id) {
-			insert_log('post_new', $post_id, $post->author, $post->content);
-			insert_notify('post_new', $post_id, $post->author, $link);
+			insert_log($type . '_post_new', $post_id, $post->author, $post->content);
+			insert_notify($type . '_post_new', $post_id, $post->author, $link);
 			return false;
 		}
 		return 'Unknown error.';
@@ -101,10 +101,7 @@ class Post {
 	
 	public static function print_form() {
 		global $db, $current_user;
-		
-		// if user is not logged in, don't show form
 		if (!$current_user->authenticated) return;
-		
 		do_view('post_form');
 	}
 	

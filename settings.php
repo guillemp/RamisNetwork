@@ -8,13 +8,16 @@ authenticated_users();
 
 $user = new User();
 $user->id = $current_user->id;
-if (!$user->read()) do_error('invalid user');
-$data['user'] = $user;
+if (!$user->read()) {
+	do_error('Invalid user');
+}
 
 $data['msg'] = false;
 if (isset($_POST['save_settings'])) {
 	$data['msg'] = save_settings();
 }
+
+$data['user'] = $user;
 
 do_header('Settings');
 do_view('settings', $data);
