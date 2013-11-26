@@ -4,6 +4,8 @@ require('config.php');
 require(LIB . 'html.php');
 require(LIB . 'User.php');
 require(LIB . 'Post.php');
+require(LIB . 'Photo.php');
+require(LIB . 'Course.php');
 
 authenticated_users();
 
@@ -30,10 +32,7 @@ function get_notifications() {
 				case 'post_like':
 					$notify_array[] = get_post_like($notify);
 					break;
-				case 'photo_like':
-					$notify_array[] = "X like your photo";
-					break;
-				case 'post_new':
+				case 'wall_post_new':
 					$notify_array[] = get_post_new($notify);
 					break;
 			}
@@ -66,19 +65,27 @@ function get_post_like($notify) {
 	return $res;
 }
 
+
+
+
+
+
 //
 // Logs
 //
 function get_logs() {
 	global $db;
 	
-	$logs = $db->get_results("SELECT * FROM logs ORDER BY log_id DESC LIMIT 20");
+	$logs = $db->get_results("SELECT * FROM logs ORDER BY log_id DESC");
 	if ($logs) {
 		$logs_array = array();
 		foreach ($logs as $log) {
 			switch ($log->log_type) {
-				case 'post_new':
-					$logs_array[] = get_post_new_log($log);
+				case 'wall_post_new':
+					$logs_array[] = get_wall_post_new_log($log);
+					break;
+				case 'course_post_new':
+					$logs_array[] = get_course_post_new_log($log);
 					break;
 				case 'user_new':
 					$logs_array[] = get_user_new_log($log);
@@ -89,8 +96,11 @@ function get_logs() {
 				case 'avatar_change':
 					$logs_array[] = get_avatar_change_log($log);
 					break;
+				case 'wall_photo_new':
+					$logs_array[] = get_photo_new_log($log);
+					break;
 				default:
-					$logs_array[] = 'Something<br/>';
+					$logs_array[] = 'Unknown activity<br/>';
 			}
 		
 		}
@@ -100,18 +110,24 @@ function get_logs() {
 }
 
 function get_avatar_change_log($log) {
-	$user = new User($log->log_user);
-	return $user->name . ' changed his profile picture.';
+	
+	$user_from = new User($log->log_user);
+	
+	$res = '';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= $user_from->name . ' changed his profile picture.';
+	return $res;
 }
 
 function get_post_like_log($log) {
+	
 	$user_from = new User($log->log_user);
 	$post = new Post($log->log_link);
 	$user_to = new User($post->author);
 	
 	$res = '';
 	$res .= '<img src="' . ROOT . 'img/like.png" width="16" height="16" />';
-	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="50" height="50" />';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
 	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a> likes ';
 	$res .= '<a href="' . profile_uri($user_to->id) . '">' . $user_to->name . '</a>\'s post';
 	$res .= '<br/><div style="margin-left:30px;">' . $post->content;
@@ -120,20 +136,57 @@ function get_post_like_log($log) {
 }
 
 function get_user_new_log($log) {
-	global $db;
 	
-	$user = new User($log->log_user);
-	return '<img src="' . ROOT . 'img/user_new.png">&nbsp;<a href="' . profile_uri($user->id) . '">' . $user->name . '</a> has been registered';
+	$user_from = new User($log->log_user);
+	
+	$res = '';
+	$res .= '<img src="' . ROOT . 'img/user_new.png">&nbsp;';
+	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a> has been registered';
+	return $res;
 }
 
-function get_post_new_log($log) {
-	global $db;
+function get_wall_post_new_log($log) {
 	
 	$user_from = new User($log->log_user);
 	$post = new Post($log->log_link);
 	$user_to = new User($post->link);
 	
-	return '<img src="' . ROOT . 'img/post_new.png">&nbsp;<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a> wrote a message to <a href="' . profile_uri($post->link) . '">' . $user_to->name . '</a><br/><div style="margin-left:30px;">' . $post->content . '</div>';
+	$res = '';
+	$res .= '<img src="' . ROOT . 'img/post_new.png">&nbsp;';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a>';
+	$res .= ' wrote a message to <a href="' . profile_uri($post->link) . '">' . $user_to->name . '</a>';
+	$res .= '<br/><div style="margin-left:30px;">' . $post->content . '</div>';
+	return $res;
+}
+
+function get_course_post_new_log($log) {
+	
+	$user_from = new User($log->log_user);
+	$post = new Post($log->log_link);
+	$course = new Course($post->link);
+	
+	$res = '';
+	$res .= '<img src="' . ROOT . 'img/post_new.png">&nbsp;';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a>';
+	$res .= ' wrote a message in <a href="' . $course->permalink() . '">' . $course->name . '</a>';
+	$res .= '<br/><div style="margin-left:30px;">' . $post->content . '</div>';
+	return $res;
+}
+
+function get_photo_new_log($log) {
+		
+	$user_from = new User($log->log_user);
+	$photo = new Photo($log->log_link);
+		
+	$res = '';
+	$res .= '<img src="' . ROOT . 'img/photo_new.png">&nbsp;';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a>';
+	$res .= ' uploaded a new photo';
+	$res .= '<br/><div style="margin-left:30px;"><img src="' . $photo->src() . '" /></div>';
+	return $res;
 }
 
 ?>

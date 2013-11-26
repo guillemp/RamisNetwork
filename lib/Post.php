@@ -81,8 +81,8 @@ class Post {
 		
 		$content = $db->escape(trim($_POST['content']));
 		
-		// return an error if empty post
 		if (!$content) return 'Can\'t save empty post';
+		if (strlen($content) > 250) return 'Limit 250 characters';
 		
 		$post = new Post();
 		$post->author = $current_user->id;
@@ -91,7 +91,7 @@ class Post {
 		$post->content = $content;
 		
 		$post_id = $post->store();
-		if ($post_id) {
+		if ($post_id > 0) {
 			insert_log($type . '_post_new', $post_id, $post->author, $post->content);
 			insert_notify($type . '_post_new', $post_id, $post->author, $link);
 			return false;

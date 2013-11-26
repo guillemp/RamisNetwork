@@ -2,7 +2,6 @@
 
 header('Content-type: text/html; charset=utf-8');
 
-// this is the header loader
 function do_header($title='') {
 	global $current_user;
 	
@@ -16,12 +15,10 @@ function do_header($title='') {
 	do_view('header', $data);
 }
 
-// this loads the footer
 function do_footer() {
 	do_view('footer');
 }
 
-// this function loads the VIEW
 function do_view($name, $data=null) {
 	global $current_user;
 	
@@ -40,7 +37,6 @@ function do_view($name, $data=null) {
 	require($_view);
 }
 
-// display an error and then, die.
 function do_error($msg='') {
 	do_header('Error');
 	echo '<div class="error">' . $msg . '</div>';

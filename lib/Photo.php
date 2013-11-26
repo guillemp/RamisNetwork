@@ -44,6 +44,9 @@ class Photo {
 	public function src() {
 		return ROOT  . 'img/photos/thumb_' . $this->name . '.jpg';
 	}
+	public function src2() {
+		return ROOT  . 'img/photos/photo_' . $this->name . '.jpg';
+	}
 	
 	// static functions
 
@@ -58,6 +61,10 @@ class Photo {
 		
 		if (!$current_user->authenticated) return;
 		
+		if ($type == 'wall' && $link != $current_user->id) {
+			return 'Not your wall';
+		}
+		
 		$photo_name = Photo::upload_photo();
 		if ($photo_name === false) {
 			return 'Select a photo to upload';
@@ -70,9 +77,12 @@ class Photo {
 		$photo->name = $photo_name;
 		
 		$photo_id = $photo->store();
-		if ($photo_id) {
-			insert_log('photo_new', $photo_id, $photo->author, $photo->name);
-			return false;
+		if ($photo_id > 0) {
+			// insert activity
+			insert_log($type.'_photo_new', $photo_id, $photo->author, $photo->name);
+			// redirect provisional!!!!!
+			header("Location: " . profile_uri($link) . '&view=photos');
+			die;
 		}
 		return 'Unknown error.';
 	}
@@ -99,7 +109,7 @@ class Photo {
 			$thumb->save($path.$photo_b, 'jpg');
 			
 			$thumb = PhpThumbFactory::create($temp);
-			$thumb->resize(180, 135);
+			$thumb->adaptiveResize(180, 135);
 			$thumb->save($path.$photo_s, 'jpg');
 
 			// I return the name

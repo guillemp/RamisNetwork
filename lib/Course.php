@@ -25,6 +25,10 @@ class Course {
 		return false;
 	}
 	
+	public function permalink() {
+		return ROOT . 'course.php?id=' . $this->id;
+	}
+	
 	public static function get_courses() {
 		global $db;
 

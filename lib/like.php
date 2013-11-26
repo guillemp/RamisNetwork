@@ -2,6 +2,7 @@
 
 include('../config.php');
 include(LIB . 'Post.php');
+
 header('Content-Type: application/json; charset=UTF-8');
 
 if (empty($_REQUEST['user'])) {
@@ -26,7 +27,7 @@ if ($post->author == $current_user->id) {
 	print_error('Can\'t like own posts');
 }
 
-// have to change "post" if diffrent type
+// TODO: change "post" if diffrent type
 if (!$post->insert_like('post')) {
     print_error('Error inserting like');
 }
