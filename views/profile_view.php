@@ -63,7 +63,7 @@
 		
 		<?php if ($photo_error) echo '<div class="error">' . $photo_error . '</div>'; ?>
 		
-		<?php Photo::print_form(); ?>
+		<?php Photo::print_form($user->id); ?>
 		
 		<?php
 			if ($photos) {
@@ -84,13 +84,16 @@
 		
 		<?php
 			if ($friends) {
+				echo '<ul class="logs">';
 				foreach ($friends as $friend) {
+					echo '<li>';
 					echo '<a href="' . profile_uri($friend->id) . '">';
 					echo '<img src="' . get_avatar($friend->avatar) . '" width="50" height="50" />';
 					echo $friend->name;
 					echo '</a>';
-					echo '<br />';
+					echo '</li>';
 				}
+				echo '</ul>';
 			} else {
 				echo 'No friends yet.';
 			}

@@ -51,8 +51,24 @@ class Post {
 		$data['post'] = $this;
 		$data['likes'] = get_user_likes('post', $this->id);
 		$data['likes_count'] = get_likes_count('post', $this->id);
+		$data['replies'] = $this->get_replies();
+		$data['is_reply'] = $this->parent > 0 ? true : false;
 		
 		do_view('post', $data);
+	}
+	
+	private function get_replies() {
+		global $db, $current_user;
+		
+		$replies = $db->get_col("SELECT post_id FROM posts WHERE post_parent=$this->id");
+		if ($replies) {
+			foreach ($replies as $reply_id) {
+				$reply = new Post($reply_id);
+				$replies_array[] = $reply;
+			}
+			return $replies_array;
+		}
+		return false;
 	}
 	
 	public function insert_like($type) {
@@ -70,6 +86,10 @@ class Post {
 		return false;
 	}
 	
+	public function permalink() {
+		return ROOT . 'post.php?id=' . $this->id;
+	}
+	
 	//
 	// static methods
 	//
@@ -82,6 +102,7 @@ class Post {
 		$content = $db->escape(trim($_POST['content']));
 		
 		if (!$content) return 'Can\'t save empty post';
+		
 		if (strlen($content) > 250) return 'Limit 250 characters';
 		
 		$post = new Post();
@@ -89,26 +110,39 @@ class Post {
 		$post->type = $type;
 		$post->link = $link;
 		$post->content = $content;
+		$post->parent = intval($_POST['parent']);
 		
 		$post_id = $post->store();
 		if ($post_id > 0) {
-			insert_log($type . '_post_new', $post_id, $post->author, $post->content);
-			insert_notify($type . '_post_new', $post_id, $post->author, $link);
+			if ($post->parent > 0) {
+				$replied_post = new Post($post->parent);
+				insert_log('reply_new', $post_id, $post->author, $post->content);
+				insert_notify('reply_new', $post_id, $post->author, $replied_post->author);
+			} else {
+				insert_log($type . '_post_new', $post_id, $post->author, $post->content);
+				if ($type == 'wall') {
+					insert_notify($type . '_post_new', $post_id, $post->author, $link);
+				}
+			}
 			return false;
 		}
 		return 'Unknown error.';
 	}
 	
-	public static function print_form() {
+	public static function print_form($parent=0) {
 		global $db, $current_user;
+		
 		if (!$current_user->authenticated) return;
-		do_view('post_form');
+		
+		$data['parent'] = $parent;
+		
+		do_view('post_form', $data);
 	}
 	
 	public static function get_posts($type, $link) {
 		global $db;
 
-		$post_ids = $db->get_col("SELECT post_id FROM posts WHERE post_type = '$type' AND post_link = $link ORDER BY post_id DESC");
+		$post_ids = $db->get_col("SELECT post_id FROM posts WHERE post_type = '$type' AND post_link = $link AND post_parent=0 ORDER BY post_id DESC");
 		if ($post_ids) {
 			foreach ($post_ids as $id) {
 				$post = new Post();

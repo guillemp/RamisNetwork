@@ -50,9 +50,10 @@ class Photo {
 	
 	// static functions
 
-	public static function print_form() {
+	public static function print_form($link) {
 		global $db, $current_user;
 		if (!$current_user->authenticated) return;
+		if ($link != $current_user->id) return;
 		do_view('photo_form');
 	}
 	

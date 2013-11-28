@@ -1,4 +1,32 @@
 <aside class="sidebar">
+	
+	<?php if ($requests) { ?>
+		<h3>Friend requests</h3>
+		
+		<?php
+		
+		echo '<ul class="notifications">';
+		foreach ($requests as $request) {
+			echo '<li>';
+			
+			$user = new User($request->friend_from);
+			
+			echo '<img src="' . get_avatar($user->avatar) . '" width="30" height="30" />';
+			echo  '<a href="' . profile_uri($user->id) . '">' . $user->name . '</a>';
+			
+			echo '<form action="" method="post">';
+			echo '<input type="hidden" name="id" value="' . $request->friend_id . '" />';
+			echo '<input type="submit" name="accept" value="Accept" class="button button-small" />';
+			echo '</form>';
+			
+			echo '</li>';
+		}
+		echo '</ul>';
+		
+		?>
+		
+	<?php } ?>
+	
 	<h3>Notifications</h3>
 	
 	<?php

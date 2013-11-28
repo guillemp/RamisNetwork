@@ -118,8 +118,8 @@ function time_ago($time) {
 	$minutes = intval($diff / 60);
 	$secs = $diff % 60;
 	
-	if ($days>1) $txt .= " $days days";
-	else if ($days==1) $txt .= " $days day";
+	if ($days> 1) return " $days days";
+	else if ($days==1) return " $days day";
 	
 	if ($hours>1) $txt .= " $hours hours";
 	else if ($hours==1) $txt .= " $hours hour";
