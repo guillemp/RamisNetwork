@@ -38,11 +38,19 @@ function get_course_post_new_log($log) {
 	$course = new Course($post->link);
 	
 	$res = '';
-	$res .= '<img src="' . ROOT . 'img/post_new.png">&nbsp;';
+	$res .= '<div class="sidebar-left">';
+	$res .= '<a href="' . profile_uri($user_from->id) . '">';
 	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= '</a>';
+	$res .= '</div>';
+	
+	$res .= '<div class="sidebar-right">';
 	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a>';
 	$res .= ' wrote a message in <a href="' . $course->permalink() . '">' . $course->name . '</a>';
-	$res .= '<br/><div style="color:#666;font-size:12px;">'. time_ago(strtotime($log->log_date)) . ' ago</div>';
+	$res .= '<br/><div class="post-date">'. time_ago(strtotime($log->log_date)) . ' ago</div>';
+	$res .= '</div>';
+	
+	$res .= '<div class="clear"></div>';
 	return $res;
 }
 

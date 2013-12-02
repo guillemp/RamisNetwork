@@ -10,7 +10,6 @@ class Login {
 	public $name;
 	public $avatar;
 	public $authenticated;
-	private $k = 482390;
 	
 	function __construct() {
 		global $db;
@@ -39,14 +38,16 @@ class Login {
 		$user = $db->get_row("SELECT id, name, password, avatar FROM users WHERE email = '$email' LIMIT 1");
 		if ($user) {
 			if ($user->password == $md5pass) {
-				//$key = md5($user->id.$this->k);
 				$this->id = $user->id;
 				$this->name = $user->name;
 				$this->avatar = $user->avatar;
-				$this->authenticated = true;	
-				// set the cookie
+				$this->authenticated = true;
 				$time = $remember ? time() + 2592000 : 0; // 30day
+				
+				// insecure putting only the id
+				// some day i'll put a md5 hash
 				setcookie('auth', $this->id, $time);
+				
 				return true;
 			}
 		}

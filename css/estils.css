@@ -41,9 +41,13 @@ li.member a {display:block;margin-bottom:30px;width:180px;float:left;position:re
 .post-links {font-size:11px;color:#666;}
 .post-likes {font-size:11px;color:#666;margin-top:5px;}
 .post-replies {}
+.post-date {color:#AAA;font-size:12px;margin-top:5px;}
+
+.sidebar-left {float:left;width:40px;}
+.sidebar-right {float:left;width:160px;}
 
 ul.notifications li {margin-bottom:10px;border-bottom:1px solid #EEE;padding-bottom:10px;font-size:13px}
-ul.logs li {margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #EEE;}
+ul.logs li {margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #EEE;}
 
 ul.courses {}
 ul.courses li a {display:block;background:#EEE;padding:10px 20px;margin-bottom:10px;border-radius:5px;}

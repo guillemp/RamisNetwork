@@ -2,7 +2,7 @@
 	<h3>Activity</h3>
 	
 	<?php if ($activity) { ?>
-		<ul class="logs">
+		<ul class="notifications">
 		<?php foreach ($activity as $activity_id) { ?>
 			<li><?php echo $activity_id; ?></li>
 		<? } ?>

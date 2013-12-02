@@ -82,13 +82,19 @@ function get_notifications() {
 
 function get_post_new($notify) {
 	$user = new User($notify->notification_from);
-	$res = '<div style="float:left;width:38px;">';
-	$res .= '<a href="' . profile_uri($user->id) . '"><img src="' . get_avatar($user->avatar) . '" width="30" height="30" />';
-	$res .= '</a></div>';
+	
+	$res = '';
+	$res .= '<div class="sidebar-left">';
+	$res .= '<a href="' . profile_uri($user->id) . '"><img src="' . get_avatar($user->avatar) . '" width="30" height="30" /></a>';
+	$res .= '</div>';
+	
+	$res .= '<div class="sidebar-right">';
 	$res .= '<a href="' . profile_uri($user->id) . '">' . $user->name . '</a><br/>';
 	$res .= '<a href="' . ROOT . 'post.php?id=' . $notify->notification_link . '">wrote</a> on ';
 	$res .= '<a href="' . profile_uri($notify->notification_to) . '">your wall</a>';
-	//$res .= ' <span>' . date("H:i", strtotime($notify->notification_date)) . '</span>';	
+	$res .= '<div class="post-date">' . time_ago(strtotime($notify->notification_date)) . '</div>';
+	$res .= '</div>';
+	$res .= '<div class="clear"></div>';	
 	return $res;
 }
 
@@ -97,23 +103,34 @@ function get_reply_new($notify) {
 	$post = new Post($notify->notification_link);
 	$replied_post = new Post($post->parent);
 	
-	$res = '<div style="float:left;width:38px;">';
-	$res .= '<a href="' . profile_uri($user->id) . '"><img src="' . get_avatar($user->avatar) . '" width="30" height="30" />';
-	$res .= '</a></div>';
+	$res = '';
+	$res .= '<div class="sidebar-left">';
+	$res .= '<a href="' . profile_uri($user->id) . '"><img src="' . get_avatar($user->avatar) . '" width="30" height="30" /></a>';
+	$res .= '</div>';
+	
+	$res .= '<div class="sidebar-right">';
 	$res .= '<a href="' . profile_uri($user->id) . '">' . $user->name . '</a><br/>replied ';
 	$res .= '<a href="' . $replied_post->permalink() . '">one of your posts</a>';
-	//$res .= ' <span>' . date("H:i", strtotime($notify->notification_date)) . '</span>';	
+	$res .= '<div class="post-date">' . time_ago(strtotime($notify->notification_date)) . '</div>';
+	$res .= '</div>';
+	$res .= '<div class="clear"></div>';	
 	return $res;
 }
 
 function get_post_like($notify) {
 	$user = new User($notify->notification_from);
-	$res = '<div style="float:left;width:38px;">';
-	$res .= '<a href="' . profile_uri($user->id) . '"><img src="' . get_avatar($user->avatar) . '" width="30" height="30" />';
-	$res .= '</a></div>';
+	
+	$res = '';
+	$res .= '<div class="sidebar-left">';
+	$res .= '<a href="' . profile_uri($user->id) . '"><img src="' . get_avatar($user->avatar) . '" width="30" height="30" /></a>';
+	$res .= '</div>';
+	
+	$res .= '<div class="sidebar-right">';
 	$res .= '<a href="' . profile_uri($user->id) . '">' . $user->name . '</a><br/>likes ';
 	$res .= '<a href="' . ROOT . 'post.php?id=' . $notify->notification_link . '">your post</a>';
-	//$res .= ' <span>' . date("H:i", strtotime($notify->notification_date)) . '</span>';
+	$res .= '<div class="post-date">' . time_ago(strtotime($notify->notification_date)) . '</div>';
+	$res .= '</div>';
+	$res .= '<div class="clear"></div>';
 	return $res;
 }
 
@@ -169,9 +186,14 @@ function get_avatar_change_log($log) {
 	$user_from = new User($log->log_user);
 	
 	$res = '';
-	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= '<div class="post-avatar">';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="50" height="50" />';
+	$res .= '</div>';
+	
 	$res .= $user_from->name . ' changed his profile picture.';
 	$res .= '<br/><div style="color:#666;font-size:12px;">'. time_ago(strtotime($log->log_date)) . ' ago';
+	
+	$res .= '<div class="clear"></div>';
 	return $res;
 }
 
@@ -182,13 +204,17 @@ function get_post_like_log($log) {
 	$user_to = new User($post->author);
 	
 	$res = '';
-	$res .= '<img src="' . ROOT . 'img/like.png" width="16" height="16" />';
-	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= '<div class="post-avatar">';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="50" height="50" />';
+	$res .= '</div>';
+	
 	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a> likes ';
 	$res .= '<a href="' . profile_uri($user_to->id) . '">' . $user_to->name . '</a>\'s ';
 	$res .= '<a href="' . $post->permalink() . '">post</a>';
 	$res .= '<br/><div style="margin-left:30px;">' . $post->content;
 	$res .= '<br/><div style="color:#666;font-size:12px;">'. time_ago(strtotime($log->log_date)) . ' ago</div>';
+	
+	$res .= '<div class="clear"></div>';
 	return $res;
 }
 
@@ -197,9 +223,10 @@ function get_user_new_log($log) {
 	$user_from = new User($log->log_user);
 	
 	$res = '';
-	$res .= '<img src="' . ROOT . 'img/user_new.png">&nbsp;';
 	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a> has been registered';
 	$res .= '<br/><div style="color:#666;font-size:12px;">'. time_ago(strtotime($log->log_date)) . ' ago';
+	
+	$res .= '<div class="clear"></div>';
 	return $res;
 }
 
@@ -210,12 +237,19 @@ function get_wall_post_new_log($log) {
 	$user_to = new User($post->link);
 	
 	$res = '';
-	$res .= '<img src="' . ROOT . 'img/post_new.png">&nbsp;';
-	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= '<div class="post-avatar">';
+	$res .= '<a href="' . profile_uri($user_from->id) . '">';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="50" height="50" />';
+	$res .= '</a>';
+	$res .= '</div>';
+	
+	
 	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a>';
-	$res .= ' wrote a message to <a href="' . profile_uri($post->link) . '">' . $user_to->name . '</a>';
+	$res .= ' wrote a <a href="'.$post->permalink().'">message</a> to <a href="' . profile_uri($post->link) . '">' . $user_to->name . '</a>';
 	$res .= '<br/><div style="margin-left:30px;">' . $post->content;
-	$res .= '<br/><div style="color:#666;font-size:12px;">'. time_ago(strtotime($log->log_date)) . ' ago</div>';
+	$res .= '<br/><div class="post-date">'. time_ago(strtotime($log->log_date)) . ' ago</div>';
+	
+	$res .= '<div class="clear"></div>';
 	return $res;
 }
 
@@ -226,12 +260,16 @@ function get_course_post_new_log($log) {
 	$course = new Course($post->link);
 	
 	$res = '';
-	$res .= '<img src="' . ROOT . 'img/post_new.png">&nbsp;';
-	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= '<div class="post-avatar">';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="50" height="50" />';
+	$res .= '</div>';
+	
 	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a>';
 	$res .= ' wrote a message in <a href="' . $course->permalink() . '">' . $course->name . '</a>';
 	$res .= '<br/><div style="margin-left:30px;">' . $post->content;
 	$res .= '<br/><div style="color:#666;font-size:12px;">'. time_ago(strtotime($log->log_date)) . ' ago</div>';
+	
+	$res .= '<div class="clear"></div>';
 	return $res;
 }
 
@@ -241,12 +279,16 @@ function get_photo_new_log($log) {
 	$photo = new Photo($log->log_link);
 		
 	$res = '';
-	$res .= '<img src="' . ROOT . 'img/photo_new.png">&nbsp;';
-	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= '<div class="post-avatar">';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="50" height="50" />';
+	$res .= '</div>';
+	
 	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a>';
 	$res .= ' uploaded a new photo';
 	$res .= '<br/><div style="margin-left:30px;"><a href="' . $photo->src2() . '"><img src="' . $photo->src() . '" /></a>';
 	$res .= '<br/><div style="color:#666;font-size:12px;">'. time_ago(strtotime($log->log_date)) . ' ago</div>';
+	
+	$res .= '<div class="clear"></div>';
 	return $res;
 }
 
@@ -258,12 +300,18 @@ function get_reply_new_log($log) {
 	$user_to = new User($replied_post->author);
 	
 	$res = '';
-	$res .= '<img src="' . ROOT . 'img/post_new.png">&nbsp;';
-	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="30" height="30" />';
+	$res .= '<div class="post-avatar">';
+	$res .= '<img src="' . get_avatar($user_from->avatar) . '" width="50" height="50" />';
+	$res .= '</div>';
+	
+	$res .= '<div class="aaaa">';
 	$res .= '<a href="' . profile_uri($user_from->id) . '">' . $user_from->name . '</a>';
 	$res .= ' reply a <a href="' . $replied_post->permalink() . '">message</a> to <a href="' . profile_uri($post->link) . '">' . $user_to->name . '</a>';
 	$res .= '<br/><div style="margin-left:30px;">' . $post->content;
-	$res .= '<br/><div style="color:#666;font-size:12px;">'. time_ago(strtotime($log->log_date)) . ' ago</div>';
+	
+	$res .= '<div class="post-date">'. time_ago(strtotime($log->log_date)) . ' ago</div>';
+	$res .= '</div>';
+	$res .= '<div class="clear"></div>';
 	return $res;
 }
 

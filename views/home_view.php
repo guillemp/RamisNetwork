@@ -11,13 +11,20 @@
 			
 			$user = new User($request->friend_from);
 			
+			echo '<div class="sidebar-left">';
 			echo '<img src="' . get_avatar($user->avatar) . '" width="30" height="30" />';
+			echo '</div>';
+			
+			echo '<div class="sidebar-right">';
 			echo  '<a href="' . profile_uri($user->id) . '">' . $user->name . '</a>';
 			
-			echo '<form action="" method="post">';
+			echo '<form action="" method="post" style="float:right">';
 			echo '<input type="hidden" name="id" value="' . $request->friend_id . '" />';
 			echo '<input type="submit" name="accept" value="Accept" class="button button-small" />';
 			echo '</form>';
+			
+			echo '</div>';
+			echo '<div class="clear"></div>';
 			
 			echo '</li>';
 		}
