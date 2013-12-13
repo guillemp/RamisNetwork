@@ -18,7 +18,6 @@
 					<li><a href="<?php echo profile_uri($current_user->id); ?>"><?php echo $current_user->name; ?></a></li>
 					<li><a href="<?php echo ROOT; ?>courses.php">Courses</a></li>
 					<li><a href="<?php echo ROOT; ?>members.php">Members</a></li>
-					<li><a href="<?php echo ROOT; ?>messages.php">Messages</a></li>
 					<li><a href="<?php echo ROOT; ?>settings.php">Settings</a></li>
 					<li><a href="<?php echo ROOT; ?>login.php?action=logout">Logout</a></li>
 				<?php } else { ?>

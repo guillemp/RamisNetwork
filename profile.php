@@ -34,14 +34,15 @@ if (isset($_POST['upload'])) {
 
 $data['friend_error'] = false;
 if (isset($_POST['add_friend'])) {
-	$data['friend_error'] = add_friend();
+	$from = intval($_POST['from']);
+	$to = intval($_POST['to']);
+	$data['friend_error'] = User::add_friend($from, $to);
 }
 
 // data for the view
 $data['user'] = $user;
 $data['posts'] = Post::get_posts('wall', $user->id);
-$data['friends'] = get_friends();
-$data['friend_button'] = friend_button();
+$data['friends'] = User::get_friends($user->id);
 
 // add new visit
 add_visit();
@@ -61,70 +62,6 @@ function add_visit() {
 	if ($current_user->id != $user->id) {
 		$db->query("UPDATE users SET visits = visits + 1 WHERE id = $user->id");
 	}
-}
-
-function friend_button() {
-	global $db, $user, $current_user;
-	
-	// can't add myself as a friend
-	if ($user->id == $current_user->id) {
-		return false;
-	}
-	
-	$friend_ids = get_friend_ids();
-	if (in_array($user->id, $friend_ids)) {
-		return false;
-	}
-	
-	$button_name = "Request friend";
-	$status = get_friend_status($current_user->id, $user->id);
-	if ($status > 0) {
-		$button_name = "Waiting";
-	}
-	
-	$button = "";
-	$button .= '<div style="margin-bottom:15px;">';
-	$button .= '<form action="profile.php" method="post">';
-	$button .= '<input type="hidden" name="from" value="' . $current_user->id . '" />';
-	$button .= '<input type="hidden" name="to" value="' . $user->id . '" />';
-	$button .= '<input type="hidden" name="id" value="' . $user->id . '" />';
-	$button .= '<input type="submit" name="add_friend" value="' . $button_name . '" class="button" style="width:200px;" />';
-	$button .= '</form>';
-	$button .= '</div>';
-	
-	return $button;
-}
-
-function add_friend() {
-	global $db, $user;
-	
-	$from = intval($_POST['from']);
-	$to = intval($_POST['to']);
-	
-	if ($db->query("INSERT INTO friends (friend_from, friend_to) VALUES ($from, $to)")) {
-		// add notify to user
-		// notify_user('friend_request');
-		header('Location: ' . profile_uri($to));
-		die;
-	}
-	return 'Error adding as a friend';
-}
-
-function get_friends() {
-	global $db, $user;
-	
-	$friend_ids = get_friend_ids($user->id);
-	if ($friend_ids) {
-		foreach ($friend_ids as $id) {
-			$friend = new User();
-			$friend->id = $id;
-			if ($friend->read()) {
-				$friends_array[] = $friend;
-			}
-		}
-		return $friends_array;
-	}
-	return false;
 }
 
 ?>

@@ -342,5 +342,5 @@
 		}
 }
 
-$db = new db('root', 'root', 'ramis', 'localhost');
+$db = new db(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
 ?>

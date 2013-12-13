@@ -3,17 +3,14 @@
 		<img src="<?php echo get_avatar($user->avatar); ?>" width="200" height="200" alt="" />
 	</div>
 	
-	<?php echo $friend_button; ?>
-		
+	<?php echo $user->friend_button(); ?>
+	
 	<ul class="user-menu">
 		<li><a href="<?php echo profile_uri($user->id); ?>">Wall</a></li>
 		<li><a href="<?php echo profile_uri($user->id) . '&amp;view=photos'; ?>">Photos</a></li>
 		<li><a href="<?php echo profile_uri($user->id) . '&amp;view=friends'; ?>">Friends</a></li>
-		<?php if ($current_user->id != $user->id) { ?>
-			<li><a href="<?php echo ROOT . 'messages.php?action=new&amp;to=' . $user->id; ?>">Send message</a></li>
-		<?php } ?>
 	</ul>
-		
+	
 	<h3>Friends</h3>
 	<?php
 	if ($friends) {

@@ -11,7 +11,7 @@ authenticated_users();
 
 if (isset($_POST['accept'])) {
 	$friend_id = intval($_POST['id']);
-	accept_request($friend_id);
+	User::accept_request($friend_id);
 }
 
 $data['requests'] = get_requests();
@@ -26,20 +26,6 @@ do_footer();
 //
 // home.php functions
 //
-
-function accept_request($id) {
-	global $db, $current_user;
-	
-	$request = $db->get_row("SELECT * FROM friends WHERE friend_id=$id");
-	if ($request) {
-		if ($db->query("UPDATE friends SET friend_status=1 WHERE friend_id=$id")) {
-			//insert_log('friend_new', $request->friend_from, $current_user->id);
-			//insert_notify('friend_new', $current_user->id, $current_user->id, $request->friend_from);
-			return true;
-		}
-	}
-	return false;
-}
 
 function get_requests() {
 	global $db, $current_user;
@@ -71,6 +57,9 @@ function get_notifications() {
 				case 'reply_new':
 					$notify_array[] = get_reply_new($notify);
 					break;
+				case 'friend_new':
+					$notify_array[] = get_friend_new($notify);
+					break;
 				default:
 					$notify_array[] = 'Unknown notification<br/>';
 			}
@@ -78,6 +67,22 @@ function get_notifications() {
 		return $notify_array;
 	}
 	return false;
+}
+
+function get_friend_new($notify) {
+	$user = new User($notify->notification_from);
+	
+	$res = '';
+	$res .= '<div class="sidebar-left">';
+	$res .= '<a href="' . profile_uri($user->id) . '"><img src="' . get_avatar($user->avatar) . '" width="30" height="30" /></a>';
+	$res .= '</div>';
+	
+	$res .= '<div class="sidebar-right">';
+	$res .= '<a href="' . profile_uri($user->id) . '">' . $user->name . '</a> is now your friend';
+	$res .= '<div class="post-date">' . time_ago(strtotime($notify->notification_date)) . '</div>';
+	$res .= '</div>';
+	$res .= '<div class="clear"></div>';	
+	return $res;
 }
 
 function get_post_new($notify) {
@@ -171,6 +176,9 @@ function get_logs() {
 				case 'wall_photo_new':
 					$logs_array[] = get_photo_new_log($log);
 					break;
+				case 'friend_new':
+					$logs_array[] = get_friend_new_log($log);
+					break;
 				default:
 					$logs_array[] = 'Unknown activity<br/>';
 			}
@@ -179,6 +187,37 @@ function get_logs() {
 		return $logs_array;
 	}
 	return false;
+}
+
+
+function get_friend_new_log($log) {
+	global $db;
+	
+	$res = '';
+	
+	$f = $db->get_row("SELECT * FROM friends WHERE friend_id=$log->log_link");
+	if ($f) {
+		
+		$from = new User($f->friend_from);
+		$to = new User($f->friend_to);
+
+		$res .= '<div class="post-avatar">';
+		$res .= '<img src="' . get_avatar($from->avatar) . '" width="50" height="50" />';
+		$res .= '</div>';
+
+		$res .= '<a href="' . profile_uri($from->id) . '">' . $from->name . '</a> and ';
+		$res .= '<a href="' . profile_uri($to->id) . '">' . $to->name . '</a> are now friends. ';
+		
+		$res .= '<div class="post-avatar">';
+		$res .= '<img src="' . get_avatar($to->avatar) . '" width="50" height="50" />';
+		$res .= '</div>';
+		
+		$res .= '<br/><div style="color:#666;font-size:12px;">'. time_ago(strtotime($log->log_date)) . ' ago';
+
+		$res .= '<div class="clear"></div>';
+	}
+	
+	return $res;
 }
 
 function get_avatar_change_log($log) {
