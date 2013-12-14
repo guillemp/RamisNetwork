@@ -48,8 +48,10 @@ class Photo {
 		return ROOT  . 'img/photos/photo_' . $this->name . '.jpg';
 	}
 	
+	//
 	// static functions
-
+	//
+	
 	public static function print_form($link) {
 		global $db, $current_user;
 		if (!$current_user->authenticated) return;

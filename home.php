@@ -203,13 +203,13 @@ function get_friend_new_log($log) {
 		$res .= '<div class="post-avatar">';
 		$res .= '<img src="' . get_avatar($from->avatar) . '" width="50" height="50" />';
 		$res .= '</div>';
-
-		$res .= '<a href="' . profile_uri($from->id) . '">' . $from->name . '</a> and ';
-		$res .= '<a href="' . profile_uri($to->id) . '">' . $to->name . '</a> are now friends. ';
 		
 		$res .= '<div class="post-avatar">';
 		$res .= '<img src="' . get_avatar($to->avatar) . '" width="50" height="50" />';
 		$res .= '</div>';
+
+		$res .= '<a href="' . profile_uri($from->id) . '">' . $from->name . '</a> and ';
+		$res .= '<a href="' . profile_uri($to->id) . '">' . $to->name . '</a> are now friends. ';
 		
 		$res .= '<br/><div style="color:#666;font-size:12px;">'. time_ago(strtotime($log->log_date)) . ' ago';
 

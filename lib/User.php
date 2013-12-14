@@ -82,6 +82,12 @@ class User {
 			return false;
 		}
 		
+		// don't show the button we are friends
+		if ($this->is_friend($current_user->id)) {
+			return false;
+		}
+		
+		// waiting for accept request
 		if ($db->get_var("SELECT count(*) FROM friends WHERE friend_from=$current_user->id AND friend_to=$this->id")) {
 			$button = "";
 			$button .= '<div style="margin-bottom:15px;">';
@@ -90,6 +96,7 @@ class User {
 			return $button;
 		}
 		
+		// accept request
 		if ($db->get_var("SELECT count(*) FROM friends WHERE friend_from=$this->id AND friend_to=$current_user->id")) {
 			$button = "";
 			$button .= '<div style="margin-bottom:15px;">';
@@ -101,7 +108,8 @@ class User {
 			$button .= '</div>';
 			return $button;
 		}
-
+		
+		// send friend request
 		$button = "";
 		$button .= '<div style="margin-bottom:15px;">';
 		$button .= '<form action="" method="post">';
@@ -116,10 +124,9 @@ class User {
 	
 	function is_friend($to) {
 		global $db;
-		if ($db->get_var("SELECT count(*) FROM friends WHERE friend_from=$this->id AND friend_to=$to")) {
-			if ($db->get_var("SELECT count(*) FROM friends WHERE friend_from=$to AND friend_to=$this->id")) {
-				return true;
-			}
+		if ($db->get_var("SELECT friend_status FROM friends WHERE friend_from=$this->id AND friend_to=$to") == 1 && 
+			$db->get_var("SELECT friend_status FROM friends WHERE friend_from=$to AND friend_to=$this->id") == 1) {
+			return true;
 		}
 		return false;
 	}

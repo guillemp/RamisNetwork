@@ -1,10 +1,5 @@
 <?php
 
-/* Guillem Pagès
- * TODO: add more security
- *
- */
-
 class Login {
 	public $id;
 	public $name;
@@ -19,8 +14,8 @@ class Login {
 		$this->avatar = '';
 		$this->authenticated = false;
 		
+		// read the cookie
 		if (isset($_COOKIE['auth'])) {
-			// read the cookie
 			$user_id = intval($_COOKIE['auth']);
 			$user = $db->get_row("SELECT id, name, avatar FROM users WHERE id = $user_id LIMIT 1");
 			if ($user) {
