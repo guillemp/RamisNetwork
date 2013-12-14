@@ -6,7 +6,6 @@ require(LIB . 'User.php');
 require(LIB . 'Post.php');
 require(LIB . 'Course.php');
 
-
 authenticated_users();
 
 $data['activity'] = get_activity();
@@ -16,6 +15,9 @@ do_header('Courses');
 do_view('courses', $data);
 do_footer();
 
+//
+// courses.php functions
+//
 
 function get_activity() {
 	global $db;

@@ -28,6 +28,7 @@ class User {
 			$this->name = $user->name;
 			$this->lastname = $user->lastname;
 			$this->email = $user->email;
+			$this->password = $user->password;
 			$this->birthday = strtotime($user->birthday);
 			$this->gender = $user->gender;
 			$this->avatar = $user->avatar;

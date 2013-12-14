@@ -35,6 +35,9 @@ if (empty($_GET['done'])) {
 
 do_footer();
 
+//
+// register.php functions
+//
 
 // form validation
 function check_form() {

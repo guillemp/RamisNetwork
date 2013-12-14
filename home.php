@@ -40,6 +40,10 @@ function get_requests() {
 	return $arr;
 }
 
+//
+// Notifications
+//
+
 function get_notifications() {
 	global $db, $current_user;
 	
@@ -139,14 +143,10 @@ function get_post_like($notify) {
 	return $res;
 }
 
-
-
-
-
-
 //
-// Logs
+// Activities (logs)
 //
+
 function get_logs() {
 	global $db;
 	
@@ -188,7 +188,6 @@ function get_logs() {
 	}
 	return false;
 }
-
 
 function get_friend_new_log($log) {
 	global $db;
